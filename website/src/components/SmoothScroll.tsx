@@ -24,6 +24,10 @@ export default function SmoothScroll() {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(500, 33);
 
+    // Double-rAF ensures all child component useEffects have registered
+    // their ScrollTriggers before we recalculate positions
+    requestAnimationFrame(() => requestAnimationFrame(() => ScrollTrigger.refresh()));
+
     return () => {
       lenis.destroy();
       gsap.ticker.remove(update);

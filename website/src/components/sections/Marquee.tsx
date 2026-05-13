@@ -20,16 +20,18 @@ export default function Marquee() {
     const width = track.scrollWidth / 2;
     const tween = gsap.to(track, { x: -width, duration: 20, ease: "none", repeat: -1 });
 
+    let tsTween: gsap.core.Tween | null = null;
     const st = ScrollTrigger.create({
       trigger: sectionRef.current, start: "top bottom", end: "bottom top",
       onUpdate: (self) => {
         const velocity = Math.abs(self.getVelocity());
-        gsap.to(tween, { timeScale: Math.min(1 + velocity / 2000, 4), duration: 0.3 });
+        tsTween?.kill();
+        tsTween = gsap.to(tween, { timeScale: Math.min(1 + velocity / 2000, 4), duration: 0.3 });
       },
-      onLeave: () => gsap.to(tween, { timeScale: 1, duration: 0.5 }),
-      onLeaveBack: () => gsap.to(tween, { timeScale: 1, duration: 0.5 }),
+      onLeave: () => { tsTween?.kill(); tsTween = gsap.to(tween, { timeScale: 1, duration: 0.5 }); },
+      onLeaveBack: () => { tsTween?.kill(); tsTween = gsap.to(tween, { timeScale: 1, duration: 0.5 }); },
     });
-    return () => { tween.kill(); st.kill(); };
+    return () => { tween.kill(); tsTween?.kill(); st.kill(); };
   }, []);
 
   const text = "IT'S TIME TO CREATE WITH SOCIAL PILLOW";

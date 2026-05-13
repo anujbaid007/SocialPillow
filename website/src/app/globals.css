@@ -107,6 +107,23 @@ html {
   scroll-behavior: auto;
 }
 
+/* Content wrapper — clip-path clips even position:fixed children (GSAP pin),
+   unlike overflow:hidden + border-radius which lets the sticky footer bleed through. */
+.content-clip {
+  clip-path: inset(0 0 0 0 round 0px 0px 40px 40px);
+}
+@media (min-width: 768px) {
+  .content-clip {
+    clip-path: inset(0 0 0 0 round 0px 0px 60px 60px);
+  }
+}
+
+/* GSAP ScrollTrigger pin spacer — must have a solid background
+   so the sticky footer doesn't bleed through the transparent gap. */
+.pin-spacer {
+  background-color: var(--sp-bg-secondary) !important;
+}
+
 body {
   background: var(--sp-bg-primary);
   color: var(--sp-text);

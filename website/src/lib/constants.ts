@@ -77,7 +77,7 @@ export const CLIENTS = [
   { name: "Hyundai", logo: "/images/clients/hyundai.png" },
   { name: "BMW", logo: "/images/clients/bmw.png" },
   { name: "Bikanervala", logo: "/images/clients/bikanervala.png" },
-  { name: "Archies", logo: "/images/clients/archies.png" },
+  { name: "Archies", logo: "/images/clients/archies.svg" },
   { name: "Uber", logo: "/images/clients/uber.png" },
   { name: "Truemeds", logo: "/images/clients/truemeds.png" },
   { name: "BML Munjal University", logo: "/images/clients/bml-munjal.png" },

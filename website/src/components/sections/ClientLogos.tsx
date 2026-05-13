@@ -25,6 +25,10 @@ const LOGO_TREATMENTS: Record<string, string> = {
   Hamariasha: "max-w-[235px] max-h-[72px]",
 };
 
+const FILTER_OVERRIDES: Record<string, string> = {
+  Uber: "invert",
+};
+
 const SLOT_TREATMENTS: Record<string, string> = {
   "Hero Motocorp": "min-w-[240px] md:min-w-[270px]",
   BMW: "min-w-[104px] md:min-w-[124px]",
@@ -56,7 +60,7 @@ function LogoMark({
         height={featured ? 90 : 68}
         className={`client-logo-image h-auto w-auto object-contain grayscale contrast-125 opacity-[var(--logo-opacity,0.42)] brightness-[var(--logo-brightness,1.45)] mix-blend-screen transition-all duration-300 hover:scale-[1.03] hover:opacity-90 hover:brightness-200 ${
           LOGO_TREATMENTS[client.name] ?? "max-w-[150px] max-h-[46px]"
-        }`}
+        } ${FILTER_OVERRIDES[client.name] ?? ""}`}
         style={{
           transform: "scale(var(--logo-scale, 1))",
         }}
@@ -80,7 +84,9 @@ export default function ClientLogos() {
     const t1 = gsap.to(row1Ref.current, { x: -w1, duration: 34, ease: "none", repeat: -1 });
     const t2 = gsap.fromTo(row2Ref.current, { x: -w2 }, { x: 0, duration: 30, ease: "none", repeat: -1 });
 
+    let isVisible = false;
     const updateCenterFocus = () => {
+      if (!isVisible) return;
       const section = sectionRef.current;
       if (!section) return;
       const center = window.innerWidth / 2;
@@ -96,11 +102,19 @@ export default function ClientLogos() {
       });
     };
 
+    // Only run the ticker when the section is in the viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisible = entry.isIntersecting; },
+      { rootMargin: "100px" },
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
     gsap.ticker.add(updateCenterFocus);
     return () => {
       t1.kill();
       t2.kill();
       gsap.ticker.remove(updateCenterFocus);
+      observer.disconnect();
     };
   }, []);
 

@@ -4,7 +4,6 @@ import {
   motion,
   useScroll,
   useTransform,
-  useSpring,
   MotionValue,
 } from "framer-motion";
 import Link from "next/link";
@@ -34,37 +33,18 @@ export const HeroParallax = ({
     offset: ["start start", "end start"],
   });
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
-
-  const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1000]),
-    springConfig
-  );
-  const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
-    springConfig
-  );
-  const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.12], [15, 0]),
-    springConfig
-  );
-  const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.15], [0.19, 0.75]),
-    springConfig
-  );
-  const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.12], [20, 0]),
-    springConfig
-  );
-  const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-1000, 100]),
-    springConfig
-  );
+  // No useSpring — Lenis already smooths scroll. Adding springs causes double-smoothing.
+  const translateX = useTransform(scrollYProgress, [0, 1], [0, 1000]);
+  const translateXReverse = useTransform(scrollYProgress, [0, 1], [0, -1000]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.12], [15, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.15], [0.19, 0.75]);
+  const rotateZ = useTransform(scrollYProgress, [0, 0.12], [20, 0]);
+  const translateY = useTransform(scrollYProgress, [0, 0.2], [-1000, 100]);
 
   return (
     <div
       ref={ref}
-      className="h-[200vh] overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] [will-change:auto] [backface-visibility:hidden]"
+      className="h-[200vh] overflow-clip antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] [will-change:auto] [backface-visibility:hidden]"
     >
       <Header />
       <motion.div

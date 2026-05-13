@@ -59,7 +59,7 @@ export default function RootLayout({
         </a>
         <SmoothScroll />
         <Navbar />
-        <div className="relative z-10 overflow-hidden rounded-b-[40px] md:rounded-b-[60px]" style={{ backgroundColor: "var(--sp-bg-primary)" }}>
+        <div className="relative z-10 isolate overflow-hidden rounded-b-[40px] md:rounded-b-[60px]" style={{ backgroundColor: "var(--sp-bg-primary)" }}>
           <main id="main-content">{children}</main>
         </div>
         <Footer />

@@ -39,45 +39,57 @@ export default function CaseStudies() {
     };
 
     const ctx = gsap.context(() => {
-      gsap.set(".cs-heading, .cs-card", { opacity: 1 });
-      if (prefersReduced) return;
+      if (prefersReduced) {
+        gsap.set(".cs-heading", { opacity: 1 });
+        return;
+      }
 
       gsap.fromTo(".cs-heading", { y: 60, opacity: 0 }, {
         y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
         scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
       });
-      gsap.fromTo(".cs-card", { y: 80, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: "power2.out",
-        scrollTrigger: { trigger: trackRef.current, start: "top 80%" },
-      });
+    }, sectionRef);
 
-      ScrollTrigger.matchMedia({
-        "(min-width: 768px)": () => {
-          const track = trackRef.current;
-          if (!track) return undefined;
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      const track = trackRef.current;
+      if (!track) return;
 
-          const getDistance = () => Math.max(0, track.scrollWidth - window.innerWidth + 96);
+      let distance = Math.max(0, track.scrollWidth - window.innerWidth + 96);
+      let pointerTimer: ReturnType<typeof setTimeout>;
 
-          const horizontalTween = gsap.to(track, {
-            x: () => -getDistance(),
-            ease: "none",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top top",
-              end: () => `+=${getDistance()}`,
-              scrub: 0.5,
-              pin: true,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-              fastScrollEnd: true,
-              onUpdate: (self) => updateCounter(self.progress),
-            },
-          });
-
-          return () => horizontalTween.kill();
+      const horizontalTween = gsap.to(track, {
+        x: () => -distance,
+        ease: "none",
+        force3D: true,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${distance}`,
+          scrub: true,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            distance = Math.max(0, track.scrollWidth - window.innerWidth + 96);
+          },
+          onUpdate: (self) => {
+            updateCounter(self.progress);
+            // Disable pointer events while scrolling to prevent hover
+            // transitions from fighting with GSAP's transform
+            if (self.direction !== 0) {
+              track.style.pointerEvents = "none";
+              clearTimeout(pointerTimer);
+              pointerTimer = setTimeout(() => {
+                track.style.pointerEvents = "";
+              }, 150);
+            }
+          },
         },
       });
-    }, sectionRef);
+
+      return () => { clearTimeout(pointerTimer); horizontalTween.kill(); };
+    });
 
     const track = trackRef.current;
     const updateCounterFromScroll = () => {
@@ -86,11 +98,11 @@ export default function CaseStudies() {
       counterRef.current.textContent = String(idx).padStart(2, "0");
     };
     track?.addEventListener("scroll", updateCounterFromScroll, { passive: true });
-    return () => { ctx.revert(); track?.removeEventListener("scroll", updateCounterFromScroll); };
+    return () => { ctx.revert(); mm.revert(); track?.removeEventListener("scroll", updateCounterFromScroll); };
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-sp-bg-secondary overflow-hidden md:min-h-screen md:py-0 py-32">
+    <section ref={sectionRef} className="bg-sp-bg-secondary md:min-h-screen md:py-0 py-32">
       <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 md:pt-32 lg:pt-36">
         <div className="flex items-end justify-between mb-14 md:mb-20">
           <div>
@@ -112,9 +124,9 @@ export default function CaseStudies() {
         </div>
       </div>
 
-      <div ref={trackRef} className="flex gap-8 overflow-x-auto md:overflow-visible px-6 md:px-16 lg:px-24 pb-6 md:pb-32 snap-x snap-mandatory scrollbar-hide will-change-transform" style={{ scrollbarWidth: "none" }}>
+      <div ref={trackRef} className="flex gap-8 overflow-x-auto md:overflow-visible px-6 md:px-16 lg:px-24 pb-6 md:pb-32 snap-x snap-mandatory md:snap-none" style={{ scrollbarWidth: "none" }}>
         {PORTFOLIO.map((item, i) => (
-          <Link key={item.slug} href={`/work/${item.slug}`} className="cs-card shrink-0 w-[340px] md:w-[480px] lg:w-[560px] snap-start group" style={{ opacity: 0 }}>
+          <Link key={item.slug} href={`/work/${item.slug}`} className="cs-card shrink-0 w-[340px] md:w-[480px] lg:w-[560px] snap-start group">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-sp-bg-card border border-white/10 relative group-hover:scale-[1.02] transition-transform duration-500 ease-out">
               <div className="absolute inset-0 group-hover:scale-110 transition-transform duration-700 ease-out"
                 style={{ background: `linear-gradient(${135 + i * 30}deg, ${["#7115FF", "#A412E2", "#B60BFF", "#6D28D9", "#8B5CF6", "#4C1D95"][i]}40, #0a0514)` }} />

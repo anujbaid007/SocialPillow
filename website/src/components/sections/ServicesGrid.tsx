@@ -124,7 +124,7 @@ export default function ServicesGrid() {
           </div>
 
           {SERVICES.map((service, i) => (
-            <Link key={service.slug} href={`/services/${service.slug}`} className="service-block block group" style={{ opacity: 0 }}
+            <Link key={service.slug} href={`/services/${service.slug}`} className="service-block block group"
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseMove={(event) => moveLens(event, i)}
               onMouseLeave={() => {
