@@ -1,47 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useState } from "react";
 import Link from "next/link";
 import { SERVICES } from "@/lib/constants";
 import { ArrowRight } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const RAINBOW_COLORS = ["#7115FF", "#A412E2", "#B60BFF", "#8B5CF6", "#6D28D9"];
 
 export default function ServicesPage() {
-  const pageRef = useRef<HTMLDivElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [hoverColor, setHoverColor] = useState("#7115FF");
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".services-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".service-row",
-        { x: -60, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ".services-list", start: "top 75%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div ref={pageRef} className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
+    <div className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
       <div className="max-w-[1440px] mx-auto">
         {/* Hero */}
         <div className="max-w-[900px] mb-20">
@@ -72,10 +43,10 @@ export default function ServicesPage() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <div
-                className="flex flex-col md:flex-row md:items-center justify-between py-10 md:py-12 px-8 md:px-12 rounded-2xl border border-white/5 transition-all duration-500"
+                className="flex flex-col md:flex-row md:items-center justify-between py-10 md:py-12 px-8 md:px-12 rounded-2xl border transition-all duration-500"
                 style={{
                   backgroundColor: hoveredIndex === i ? hoverColor + "12" : "transparent",
-                  borderColor: hoveredIndex === i ? hoverColor + "30" : "rgba(255,255,255,0.05)",
+                  borderColor: hoveredIndex === i ? hoverColor + "30" : "var(--sp-border)",
                 }}
               >
                 <div className="flex-1">
@@ -83,10 +54,8 @@ export default function ServicesPage() {
                     {service.subtitle}
                   </p>
                   <h2
-                    className="font-heading text-3xl md:text-5xl lg:text-6xl font-900 transition-colors duration-500"
-                    style={{
-                      color: hoveredIndex === i ? hoverColor : "rgba(255,255,255,0.2)",
-                    }}
+                    className="font-heading text-3xl md:text-5xl lg:text-6xl font-900 transition-colors duration-500 text-sp-white/30"
+                    style={hoveredIndex === i ? { color: hoverColor } : undefined}
                   >
                     {service.title}
                   </h2>
@@ -98,11 +67,11 @@ export default function ServicesPage() {
                   <div
                     className="w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-all duration-500"
                     style={{
-                      borderColor: hoveredIndex === i ? hoverColor : "rgba(255,255,255,0.1)",
+                      borderColor: hoveredIndex === i ? hoverColor : "var(--sp-border-strong)",
                       backgroundColor: hoveredIndex === i ? hoverColor : "transparent",
                     }}
                   >
-                    <ArrowRight size={18} color={hoveredIndex === i ? "white" : "rgba(255,255,255,0.3)"} />
+                    <ArrowRight size={18} className="text-sp-text/45" color={hoveredIndex === i ? "white" : undefined} />
                   </div>
                 </div>
               </div>
@@ -122,7 +91,7 @@ export default function ServicesPage() {
             {["Discovery", "Strategy", "Prototype", "Optimization"].map((step, i) => (
               <div
                 key={step}
-                className="p-8 rounded-2xl bg-sp-bg-card border border-white/5 text-center hover:border-sp-purple/20 transition-colors duration-300"
+                className="p-8 rounded-2xl bg-sp-bg-card border border-sp-border text-center hover:border-sp-purple/30 transition-colors duration-300"
               >
                 <span className="font-heading text-5xl font-900 text-sp-purple/20">
                   {String(i + 1).padStart(2, "0")}

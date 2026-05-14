@@ -1,11 +1,4 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const BLOG_POSTS = [
   {
@@ -53,34 +46,9 @@ const BLOG_POSTS = [
 ];
 
 export default function BlogPage() {
-  const pageRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".blog-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".blog-card",
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".blog-grid", start: "top 80%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, []);
 
   return (
-    <div ref={pageRef} className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
+    <div className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
       <div className="max-w-[1440px] mx-auto">
         {/* Hero */}
         <div className="mb-16">
@@ -101,17 +69,17 @@ export default function BlogPage() {
               data-cursor-text="View Blog"
               className="blog-card group"
             >
-              <div className="aspect-[16/10] rounded-xl overflow-hidden bg-sp-bg-card border border-white/5 relative">
+              <div className="aspect-[16/10] rounded-xl overflow-hidden bg-sp-bg-card border border-sp-border relative">
                 <div
                   className="absolute inset-0"
                   style={{
                     background: `linear-gradient(${120 + i * 25}deg, ${
                       ["#7115FF", "#A412E2", "#B60BFF", "#6D28D9", "#8B5CF6", "#4C1D95"][i % 6]
-                    }25, #11091B)`,
+                    }25, var(--sp-bg-card))`,
                   }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center p-6">
-                  <span className="font-heading text-lg font-700 text-white/15 text-center group-hover:text-white/25 transition-colors">
+                  <span className="font-heading text-lg font-700 text-sp-white/25 text-center group-hover:text-sp-white/40 transition-colors">
                     {post.title}
                   </span>
                 </div>

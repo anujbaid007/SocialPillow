@@ -1,13 +1,6 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { BLOG_DETAILS } from "@/lib/data";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const BLOG_SLUGS = [
   "social-media-evolution-2025",
@@ -19,43 +12,15 @@ const BLOG_SLUGS = [
 ];
 
 export default function BlogPost({ slug }: { slug: string }) {
-  const pageRef = useRef<HTMLDivElement>(null);
-
   const post = BLOG_DETAILS[slug];
   const currentIndex = BLOG_SLUGS.indexOf(slug);
   const nextSlug = BLOG_SLUGS[(currentIndex + 1) % BLOG_SLUGS.length];
   const nextPost = BLOG_DETAILS[nextSlug];
 
-  useEffect(() => {
-    if (!post) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".post-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".post-content > *",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".post-content", start: "top 85%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, [post]);
-
   if (!post) return null;
 
   return (
-    <div ref={pageRef}>
+    <div>
       {/* Hero */}
       <section className="pt-28 pb-12 px-6 md:px-12 lg:px-18">
         <div className="max-w-[800px] mx-auto">
@@ -85,7 +50,7 @@ export default function BlogPost({ slug }: { slug: string }) {
             {post.title}
           </h1>
 
-          <div className="flex items-center gap-3 mt-8 pt-8 border-t border-white/5">
+          <div className="flex items-center gap-3 mt-8 pt-8 border-t border-sp-border">
             <div className="w-10 h-10 rounded-full bg-sp-purple/20 flex items-center justify-center">
               <span className="font-heading text-sm font-700 text-sp-purple">
                 SP

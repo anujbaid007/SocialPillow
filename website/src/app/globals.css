@@ -5,18 +5,23 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Brand accent — stable across themes */
   --sp-purple: #7115FF;
   --sp-purple-light: #A412E2;
   --sp-purple-bright: #B60BFF;
-  --sp-bg-primary: #06010E;
-  --sp-bg-secondary: #120B1E;
-  --sp-bg-dark: #26123E;
-  --sp-bg-card: #11091B;
-  --sp-text: #F9F6FF;
-  --sp-white: #FFFFFF;
-  --sp-gray: #999999;
-  --background: #06010E;
-  --foreground: #F9F6FF;
+
+  /* LIGHT THEME (default). `.dark` class on <html> swaps these to dark values. */
+  --sp-bg-primary: #FAF7FF;
+  --sp-bg-secondary: #F1EAFB;
+  --sp-bg-dark: #E5D8F4;
+  --sp-bg-card: #FFFFFF;
+  --sp-text: #1A0F2E;
+  --sp-white: #06010E;
+  --sp-gray: #6B5F7A;
+  --sp-border: rgba(6, 1, 14, 0.10);
+  --sp-border-strong: rgba(6, 1, 14, 0.18);
+  --background: #FAF7FF;
+  --foreground: #1A0F2E;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -60,6 +65,8 @@
   --color-sp-text: var(--sp-text);
   --color-sp-white: var(--sp-white);
   --color-sp-gray: var(--sp-gray);
+  --color-sp-border: var(--sp-border);
+  --color-sp-border-strong: var(--sp-border-strong);
   --font-heading: var(--font-sans);
   --font-body: var(--font-space-grotesk);
   --font-sans: var(--font-sans);
@@ -118,11 +125,7 @@ html {
   }
 }
 
-/* GSAP ScrollTrigger pin spacer — must have a solid background
-   so the sticky footer doesn't bleed through the transparent gap. */
-.pin-spacer {
-  background-color: var(--sp-bg-secondary) !important;
-}
+/* Pin-spacer no longer needed — CaseStudies uses CSS sticky instead of GSAP pin */
 
 body {
   background: var(--sp-bg-primary);
@@ -249,8 +252,18 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  /* DARK THEME — applied via `.dark` class on <html>. */
+  --sp-bg-primary: #06010E;
+  --sp-bg-secondary: #120B1E;
+  --sp-bg-dark: #26123E;
+  --sp-bg-card: #11091B;
+  --sp-text: #F9F6FF;
+  --sp-white: #FFFFFF;
+  --sp-gray: #999999;
+  --sp-border: rgba(255, 255, 255, 0.06);
+  --sp-border-strong: rgba(255, 255, 255, 0.15);
+  --background: #06010E;
+  --foreground: #F9F6FF;
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -288,8 +301,280 @@ a, button, [role="button"], input[type="submit"], .cursor-pointer {
   }
   body {
     @apply bg-background text-foreground;
+    /* Slightly improved text rendering — used by all major design systems. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   html {
     @apply font-sans;
   }
+
+  /* Accessibility — visible keyboard focus on every interactive surface.
+     Uses :focus-visible so mouse clicks don't show a ring (only keyboard nav). */
+  a:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid var(--sp-purple);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Clickable elements get a pointer cursor by default. */
+  a,
+  button,
+  [role="button"],
+  label[for] {
+    cursor: pointer;
+  }
+
+  /* Custom directional cursor color — pure brand purple in light theme,
+     white in dark theme. */
+  .sp-directional-cursor { color: var(--sp-purple); }
+  html.dark .sp-directional-cursor { color: #FFFFFF; }
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+}
+
+/* Page-load fade — used by Hero. Respects prefers-reduced-motion. */
+@keyframes sp-fade-up {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.sp-fade-up {
+  animation: sp-fade-up 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-fade-up { animation: none !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Lenis adds .is-scrolling on <html> during active scroll. Elements that opt in
+   via .scroll-lock-hover block pointer-events (so hover effects don't fire on
+   content sliding past a stationary cursor) and have their transitions frozen
+   so any in-flight hover transition snaps to its idle state without animating. */
+html.is-scrolling .scroll-lock-hover,
+html.is-scrolling .scroll-lock-hover * {
+  pointer-events: none !important;
+}
+html.is-scrolling .scroll-lock-hover *,
+html.is-scrolling .scroll-lock-hover {
+  transition: none !important;
+}
+
+/* Footer theming — inverted from the page on purpose:
+   light page → dark footer, dark page → light footer.
+   `.footer-themed` provides scoped color tokens that everything inside the
+   footer can reference via the --fx-* custom properties. */
+.footer-themed {
+  --fx-bg-from: #1a0e2e;
+  --fx-bg-to:   #0a0514;
+  --fx-text:    #FFFFFF;
+  --fx-text-50: rgba(255, 255, 255, 0.5);
+  --fx-text-40: rgba(255, 255, 255, 0.4);
+  --fx-text-30: rgba(255, 255, 255, 0.3);
+  --fx-text-25: rgba(255, 255, 255, 0.25);
+  --fx-border:  rgba(255, 255, 255, 0.10);
+  --fx-border-soft: rgba(255, 255, 255, 0.06);
+  --fx-accent:  var(--sp-purple);
+  background: linear-gradient(180deg, var(--fx-bg-from) 0%, var(--fx-bg-to) 100%);
+  color: var(--fx-text);
+}
+html.dark .footer-themed {
+  --fx-bg-from: #F1EAFB;
+  --fx-bg-to:   #E5D8F4;
+  --fx-text:    #06010E;
+  --fx-text-50: rgba(6, 1, 14, 0.55);
+  --fx-text-40: rgba(6, 1, 14, 0.50);
+  --fx-text-30: rgba(6, 1, 14, 0.40);
+  --fx-text-25: rgba(6, 1, 14, 0.35);
+  --fx-border:  rgba(6, 1, 14, 0.18);
+  --fx-border-soft: rgba(6, 1, 14, 0.10);
+  --fx-accent:  var(--sp-purple);
+}
+
+/* Footer parallax — "page peels back to reveal footer beneath" pattern.
+
+   Architecture:
+   - Footer is `fixed inset-x-0 bottom-0 z-0` — physically sits at viewport
+     bottom at all times. Pinned. Never moves.
+   - <main> is `relative z-10 bg-sp-bg` — has solid bg and stacks above the
+     footer. While main is in view, it visually covers the footer.
+   - Body has `padding-bottom: var(--footer-h)` — exact scroll room for the
+     footer to be revealed at the end of the page. JS (FooterReveal.tsx)
+     keeps --footer-h synced to the actual rendered footer height.
+
+   The parallax effect emerges naturally from the architecture:
+   - As the user scrolls past the last section, <main> slides up off the
+     viewport while the footer stays fixed at the bottom — so the footer
+     is revealed beneath, like a page peeling away.
+   - No animation, no JS scroll listener, no z-stacking quirks. Just
+     two layers and a measured padding. Same pattern Schbang uses. */
+.sp-footer-reveal-body {
+  padding-bottom: var(--footer-h, 600px);
+}
+
+/* Inside the footer itself, give the content a subtle reveal as it
+   actually enters view — pure CSS, scroll-timeline based, GPU only. */
+@keyframes footer-content-rise {
+  from {
+    transform: translate3d(0, 32px, 0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .footer-themed > * {
+    animation: footer-content-rise linear both;
+    animation-timeline: view(block 100% 0%);
+    animation-range: entry 0% entry 80%;
+  }
+}
+
+/* Floating decorative product cutouts in the pre-footer CTA.
+   Mirrors the "Take a Pillow and Relax!" treatment on socialpillow.co
+   — small tilted product photos slide in from the screen edges as the
+   footer comes into view. Each cutout has a tilted "resting" transform
+   that the slide-in animation interpolates to from an offset start. */
+.sp-float-decor {
+  /* The static end-state — what the cutout looks like once revealed. */
+  transform-origin: center;
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.35));
+  will-change: transform, opacity;
+}
+.sp-float-tl {
+  transform: rotate(-14deg) skewX(4deg);
+  border-radius: 22px;
+}
+.sp-float-tr {
+  transform: rotate(12deg);
+  border-radius: 22px;
+}
+.sp-float-bl {
+  transform: rotate(-10deg) skewY(-2deg);
+  border-radius: 22px;
+}
+
+/* fadeIn-from-direction keyframes. Each animation keeps the
+   element's resting rotate/skew and just adds an extra translate that
+   eases back to 0 — so the cutout *slides* in from outside the panel
+   instead of merely fading on the spot. */
+@keyframes sp-float-in-tl {
+  from {
+    opacity: 0;
+    transform: translate3d(-30px, -80px, 0) rotate(-14deg) skewX(4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(-14deg) skewX(4deg);
+  }
+}
+@keyframes sp-float-in-tr {
+  from {
+    opacity: 0;
+    transform: translate3d(90px, -40px, 0) rotate(12deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(12deg);
+  }
+}
+@keyframes sp-float-in-bl {
+  from {
+    opacity: 0;
+    transform: translate3d(-20px, 90px, 0) rotate(-10deg) skewY(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(-10deg) skewY(-2deg);
+  }
+}
+
+/* Idle state — cutouts are hidden until the footer is revealed.
+   view-timeline can't drive these because the footer is position:fixed
+   (it never "enters" the viewport in the scroll-timeline sense). We use
+   an IntersectionObserver on a sentinel at the bottom of <main> to
+   toggle `data-visible="true"` on the footer when reveal begins. */
+.sp-float-decor {
+  opacity: 0;
+}
+.footer-themed[data-visible="true"] .sp-float-tl {
+  animation: sp-float-in-tl 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.footer-themed[data-visible="true"] .sp-float-tr {
+  animation: sp-float-in-tr 950ms 80ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.footer-themed[data-visible="true"] .sp-float-bl {
+  animation: sp-float-in-bl 1000ms 160ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-float-tl,
+  .sp-float-tr,
+  .sp-float-bl,
+  .footer-themed[data-visible="true"] .sp-float-tl,
+  .footer-themed[data-visible="true"] .sp-float-tr,
+  .footer-themed[data-visible="true"] .sp-float-bl {
+    animation: none !important;
+    opacity: 1;
+  }
+}
+
+/* Light theme — partner logos are simple-icons single-path white-fill SVGs;
+   force them to render dark on the light background. */
+html:not(.dark) .partner-logo-mark {
+  filter: brightness(0) saturate(0) !important;
+  mix-blend-mode: normal !important;
+  opacity: 0.85;
+}
+html:not(.dark) .partner-logo-mark:hover {
+  opacity: 1;
+}
+
+/* Light theme — client logos.
+   `grayscale(1)` desaturates while keeping internal lightness variation, so
+   detail-rich marks (BMW roundel, JBL block, Hero "H", etc.) read as their
+   actual shape instead of collapsing to a solid blob like brightness(0) did.
+   `multiply` lets any white logo background drop out into the page bg.
+   Mild contrast/darken brings the result close to a uniform black treatment. */
+html:not(.dark) .client-logo-image {
+  filter: grayscale(1) contrast(1.15) brightness(0.55) !important;
+  mix-blend-mode: multiply !important;
+  opacity: 1;
+}
+
+/* Theme — ServicesGrid background overlay.
+   Dark: subtle purple top-left glow + fade-to-black at bottom.
+   Light: same purple glow, no dark fade (would look like a mud band on light bg). */
+.services-overlay {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(113, 21, 255, 0.12), transparent 32%);
+}
+html.dark .services-overlay {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(113, 21, 255, 0.14), transparent 32%),
+    linear-gradient(to bottom, transparent, rgba(6, 1, 14, 0.72));
+}
+
+/* Smooth color crossfade when toggling theme (skip transforms / layout props). */
+html.theme-transitioning,
+html.theme-transitioning body,
+html.theme-transitioning * {
+  transition: background-color 240ms ease, border-color 240ms ease, color 240ms ease, fill 240ms ease, stroke 240ms ease !important;
 }

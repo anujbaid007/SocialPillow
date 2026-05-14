@@ -1,148 +1,98 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import Image from "next/image";
 import { PORTFOLIO } from "@/lib/constants";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
+// 3-up grid of real socialpillow.co project images. Theming is consistent
+// across light + dark mode because the section bg, card frame, and title
+// all use semantic tokens (bg-sp-bg-secondary / bg-sp-bg-card / text-sp-*).
 export default function CaseStudies() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
-
-  const scrollLeft = () => {
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      window.scrollBy({ top: -window.innerHeight * 0.75, behavior: "smooth" });
-      return;
-    }
-    trackRef.current?.scrollBy({ left: -500, behavior: "smooth" });
-  };
-
-  const scrollRight = () => {
-    if (window.matchMedia("(min-width: 768px)").matches) {
-      window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" });
-      return;
-    }
-    trackRef.current?.scrollBy({ left: 500, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const updateCounter = (progress: number) => {
-      if (!counterRef.current) return;
-      const idx = Math.min(PORTFOLIO.length, Math.round(progress * (PORTFOLIO.length - 1)) + 1);
-      counterRef.current.textContent = String(idx).padStart(2, "0");
-    };
-
-    const ctx = gsap.context(() => {
-      if (prefersReduced) {
-        gsap.set(".cs-heading", { opacity: 1 });
-        return;
-      }
-
-      gsap.fromTo(".cs-heading", { y: 60, opacity: 0 }, {
-        y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-    }, sectionRef);
-
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px)", () => {
-      const track = trackRef.current;
-      if (!track) return;
-
-      let distance = Math.max(0, track.scrollWidth - window.innerWidth + 96);
-      let pointerTimer: ReturnType<typeof setTimeout>;
-
-      const horizontalTween = gsap.to(track, {
-        x: () => -distance,
-        ease: "none",
-        force3D: true,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: () => `+=${distance}`,
-          scrub: true,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onRefresh: () => {
-            distance = Math.max(0, track.scrollWidth - window.innerWidth + 96);
-          },
-          onUpdate: (self) => {
-            updateCounter(self.progress);
-            // Disable pointer events while scrolling to prevent hover
-            // transitions from fighting with GSAP's transform
-            if (self.direction !== 0) {
-              track.style.pointerEvents = "none";
-              clearTimeout(pointerTimer);
-              pointerTimer = setTimeout(() => {
-                track.style.pointerEvents = "";
-              }, 150);
-            }
-          },
-        },
-      });
-
-      return () => { clearTimeout(pointerTimer); horizontalTween.kill(); };
-    });
-
-    const track = trackRef.current;
-    const updateCounterFromScroll = () => {
-      if (!track || !counterRef.current) return;
-      const idx = Math.round(track.scrollLeft / 500) + 1;
-      counterRef.current.textContent = String(idx).padStart(2, "0");
-    };
-    track?.addEventListener("scroll", updateCounterFromScroll, { passive: true });
-    return () => { ctx.revert(); mm.revert(); track?.removeEventListener("scroll", updateCounterFromScroll); };
-  }, []);
+  const items = PORTFOLIO.slice(0, 6);
 
   return (
-    <section ref={sectionRef} className="bg-sp-bg-secondary md:min-h-screen md:py-0 py-32">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 md:pt-32 lg:pt-36">
-        <div className="flex items-end justify-between mb-14 md:mb-20">
+    <section className="py-24 md:py-36 px-6 md:px-16 lg:px-24 bg-sp-bg-secondary">
+      <div className="max-w-[1400px] mx-auto">
+        <div className="flex items-end justify-between gap-6 mb-12 md:mb-16">
           <div>
-            <p className="font-body text-sm uppercase tracking-[0.2em] text-sp-purple mb-5">Selected Work</p>
-            <h2 className="cs-heading font-heading text-4xl md:text-6xl lg:text-7xl font-800 text-sp-white">Our Projects</h2>
+            <p className="font-body text-sm uppercase tracking-[0.2em] text-sp-purple mb-4">
+              Selected Work
+            </p>
+            <h2 className="font-heading text-4xl md:text-6xl lg:text-7xl font-800 text-sp-white leading-[0.95] tracking-[-0.02em]">
+              Our Projects
+            </h2>
           </div>
-          <div className="hidden md:flex items-center gap-6">
-            <span className="font-heading text-5xl font-800 text-sp-purple"><span ref={counterRef}>01</span></span>
-            <span className="text-sp-text/30 font-body text-base">/ {String(PORTFOLIO.length).padStart(2, "0")}</span>
-            <div className="flex gap-3 ml-4">
-              <button onClick={scrollLeft} className="w-14 h-14 rounded-full border-2 border-white/10 flex items-center justify-center hover:bg-sp-purple hover:border-sp-purple transition-all duration-300" aria-label="Previous">
-                <ArrowLeft size={20} />
-              </button>
-              <button onClick={scrollRight} className="w-14 h-14 rounded-full border-2 border-white/10 flex items-center justify-center hover:bg-sp-purple hover:border-sp-purple transition-all duration-300" aria-label="Next">
-                <ArrowRight size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div ref={trackRef} className="flex gap-8 overflow-x-auto md:overflow-visible px-6 md:px-16 lg:px-24 pb-6 md:pb-32 snap-x snap-mandatory md:snap-none" style={{ scrollbarWidth: "none" }}>
-        {PORTFOLIO.map((item, i) => (
-          <Link key={item.slug} href={`/work/${item.slug}`} className="cs-card shrink-0 w-[340px] md:w-[480px] lg:w-[560px] snap-start group">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-sp-bg-card border border-white/10 relative group-hover:scale-[1.02] transition-transform duration-500 ease-out">
-              <div className="absolute inset-0 group-hover:scale-110 transition-transform duration-700 ease-out"
-                style={{ background: `linear-gradient(${135 + i * 30}deg, ${["#7115FF", "#A412E2", "#B60BFF", "#6D28D9", "#8B5CF6", "#4C1D95"][i]}40, #0a0514)` }} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-heading text-3xl md:text-4xl font-800 text-white/20 group-hover:text-white/50 group-hover:scale-110 transition-all duration-500">{item.title}</span>
-              </div>
-              <div className="absolute top-5 left-5">
-                <span className="px-4 py-1.5 bg-sp-purple/90 backdrop-blur-sm rounded-full font-body text-xs font-500 text-white uppercase tracking-wide">{item.category}</span>
-              </div>
-            </div>
-            <div className="mt-5">
-              <h3 className="font-heading text-xl md:text-2xl font-700 text-sp-white group-hover:text-sp-purple transition-colors duration-300">{item.title}</h3>
-              <p className="font-body text-sm text-sp-text/50 mt-1.5">{item.subtitle}</p>
-            </div>
+          <Link
+            href="/work"
+            className="hidden md:inline-flex items-center gap-2 px-5 py-3 min-h-[44px] border border-sp-border-strong rounded-full font-body text-sm text-sp-text/80 hover:text-sp-white hover:border-sp-purple transition-colors"
+          >
+            View all
+            <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
-        ))}
+        </div>
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {items.map((item, i) => (
+            <li key={item.slug}>
+              <Link
+                href={`/work/${item.slug}`}
+                className="group block focus:outline-none"
+                aria-label={`${item.title} — ${item.subtitle}`}
+              >
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-sp-bg-card border border-sp-border-strong transition-shadow duration-300 group-hover:shadow-[0_20px_50px_-15px_rgba(113,21,255,0.35)]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                    loading="eager"
+                    className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                    unoptimized
+                  />
+
+                  {/* Bottom gradient veil for legibility of the arrow + index */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/60 via-black/15 to-transparent"
+                  />
+
+                  {/* Top row — index + category pill */}
+                  <div className="absolute top-5 left-5 right-5 flex items-center justify-between">
+                    <span className="font-body text-xs font-700 tabular-nums text-white drop-shadow">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="inline-flex px-3 py-1 bg-white/15 backdrop-blur-sm rounded-full font-body text-[10px] font-600 text-white uppercase tracking-[0.15em]">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  {/* Arrow chip, bottom-right */}
+                  <span className="absolute bottom-5 right-5 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center transition-all duration-300 group-hover:bg-sp-purple group-hover:scale-110">
+                    <ArrowUpRight size={16} className="text-white" aria-hidden="true" />
+                  </span>
+                </div>
+
+                <div className="mt-5">
+                  <h3 className="font-heading text-lg md:text-xl font-700 text-sp-white group-hover:text-sp-purple transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="font-body text-sm text-sp-text/55 mt-1.5 leading-relaxed">
+                    {item.subtitle}
+                  </p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-12 md:hidden">
+          <Link
+            href="/work"
+            className="inline-flex items-center gap-2 px-6 py-3 min-h-[44px] border border-sp-border-strong rounded-full font-body text-sm text-sp-text/80 hover:text-sp-white hover:border-sp-purple transition-colors"
+          >
+            View all projects
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
       </div>
     </section>
   );

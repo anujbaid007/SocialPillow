@@ -1,67 +1,120 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import MagneticButton from "@/components/ui/MagneticButton";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const LINE_1 =
+  "We bring your brand to life with creative strategies that captivate and convert.";
+const LINE_2 =
+  "From viral campaigns to impactful events, we ensure your business stands out — one brand at a time.";
+
+// Split a sentence into <span> per word so each can be animated separately
+// while preserving the natural line wrapping of the original text.
+function renderWords(text: string, prefix: string) {
+  return text.split(/(\s+)/).map((part, i) =>
+    /\s+/.test(part) ? (
+      <span key={`${prefix}-s${i}`}>{part}</span>
+    ) : (
+      <span key={`${prefix}-w${i}`} className="sp-defines-word">
+        {part}
+      </span>
+    )
+  );
+}
 
 export default function WhatDefinesUs() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ctx = gsap.context(() => {
-      const words = gsap.utils.toArray<HTMLElement>(".defines-word");
-      if (prefersReduced) { words.forEach((w) => gsap.set(w, { opacity: 1 })); return; }
-      words.forEach((word) => {
-        gsap.fromTo(word, { opacity: 0.15 }, {
-          opacity: 1, ease: "none",
-          scrollTrigger: { trigger: word, start: "top 85%", end: "top 45%", scrub: true },
-        });
-      });
-      gsap.to(".rotating-arrow", { rotation: 360, duration: 8, ease: "none", repeat: -1 });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
+  useGSAP(
+    () => {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (reduceMotion) {
+        gsap.set(".sp-defines-word", { "--t": 1 });
+        return;
+      }
 
-  const text1 = "We are brand builders at heart, creators by design, and digital enthusiasts in practice.";
-  const text2 = "Our mission — taking the best of Indian creative talent to the world, one brand at a time.";
+      // Single shared scrub timeline staggered across every word in document
+      // order, so the second paragraph cannot start colouring until the first
+      // one finishes — the words light up sequentially across both lines.
+      gsap.fromTo(
+        ".sp-defines-word",
+        { "--t": 0 },
+        {
+          "--t": 1,
+          ease: "none",
+          stagger: 0.4,
+          scrollTrigger: {
+            trigger: ".sp-defines-stack",
+            start: "top 75%",
+            end: "bottom 60%",
+            scrub: 1,
+          },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section ref={sectionRef} className="py-32 md:py-44 px-6 md:px-16 lg:px-24 bg-sp-bg-secondary">
+    <section
+      ref={sectionRef}
+      className="py-24 md:py-36 px-6 md:px-16 lg:px-24 bg-sp-bg-secondary"
+    >
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-5 gap-14 lg:gap-20 items-start">
-        <div className="lg:col-span-2 lg:sticky lg:top-32">
+        <div className="lg:col-span-2 lg:sticky lg:top-28">
           <div className="flex items-center gap-5 mb-10">
-            <div className="rotating-arrow w-14 h-14 border-2 border-sp-purple rounded-full flex items-center justify-center">
+            <div className="w-14 h-14 border-2 border-sp-purple rounded-full flex items-center justify-center">
               <ArrowRight size={22} className="text-sp-purple" />
             </div>
-            <span className="font-body text-sm uppercase tracking-[0.15em] text-sp-text/30">What Defines Us</span>
+            <span className="font-body text-sm uppercase tracking-[0.15em] text-sp-text/40">
+              What Defines Us
+            </span>
           </div>
-          <MagneticButton strength={0.2}>
-            <Link href="/about" className="inline-flex items-center gap-3 px-10 py-5 bg-sp-purple text-white rounded-full font-body text-base font-500 hover:bg-sp-purple-light transition-all duration-300 hover:shadow-[0_0_40px_rgba(113,21,255,0.3)]">
-              <span className="relative z-10">Dive Into Our Story</span>
-              <ArrowRight size={16} className="relative z-10" />
-            </Link>
-          </MagneticButton>
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-sp-purple hover:bg-sp-purple-light text-white rounded-full font-body text-base font-500 transition-colors"
+          >
+            Dive Into Our Story
+            <ArrowRight size={16} />
+          </Link>
         </div>
 
-        <div className="lg:col-span-3 space-y-12">
-          <p className="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-700 leading-[1.25]">
-            {text1.split(" ").map((word, i) => (
-              <span key={i}><span className="defines-word inline">{word}</span>{" "}</span>
-            ))}
+        <div className="sp-defines-stack lg:col-span-3 space-y-10">
+          <p className="font-heading text-3xl md:text-4xl lg:text-[2.6rem] font-700 leading-[1.25]">
+            {renderWords(LINE_1, "l1")}
           </p>
-          <p className="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-700 leading-[1.25]">
-            {text2.split(" ").map((word, i) => (
-              <span key={i}><span className="defines-word inline">{word}</span>{" "}</span>
-            ))}
+          <p className="font-heading text-3xl md:text-4xl lg:text-[2.6rem] font-700 leading-[1.25]">
+            {renderWords(LINE_2, "l2")}
           </p>
         </div>
       </div>
+
+      <style>{`
+        /* Each word interpolates between the dim and bright theme colours
+           via color-mix, driven by the --t custom property GSAP scrubs from
+           0 → 1 as the paragraph scrolls through the viewport. */
+        .sp-defines-word {
+          --t: 0;
+          display: inline-block;
+          color: color-mix(in oklab, var(--sp-text) calc((1 - var(--t)) * 100%), var(--sp-white) calc(var(--t) * 100%));
+          opacity: calc(0.22 + var(--t) * 0.78);
+          will-change: color, opacity;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sp-defines-word {
+            --t: 1;
+            opacity: 1;
+          }
+        }
+      `}</style>
     </section>
   );
 }

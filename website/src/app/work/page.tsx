@@ -1,17 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useState } from "react";
 import Link from "next/link";
 import { PORTFOLIO } from "@/lib/constants";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const FILTERS = ["All", "Branding", "Social Media", "Content"];
 
 export default function WorkPage() {
-  const pageRef = useRef<HTMLDivElement>(null);
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filtered =
@@ -19,32 +14,8 @@ export default function WorkPage() {
       ? PORTFOLIO
       : PORTFOLIO.filter((p) => p.category === activeFilter);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".work-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".work-card",
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".work-grid", start: "top 80%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, [activeFilter]);
-
   return (
-    <div ref={pageRef} className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
+    <div className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
       <div className="max-w-[1440px] mx-auto">
         {/* Hero */}
         <div className="mb-16">
@@ -65,7 +36,7 @@ export default function WorkPage() {
               className={`px-5 py-2.5 rounded-full font-body text-sm transition-all duration-300 ${
                 activeFilter === f
                   ? "bg-sp-purple text-white"
-                  : "border border-white/10 text-sp-text/50 hover:border-sp-purple/30"
+                  : "border border-sp-border-strong text-sp-text/50 hover:border-sp-purple/30"
               }`}
             >
               {f}
@@ -82,17 +53,17 @@ export default function WorkPage() {
               data-cursor-text="View Case Study"
               className="work-card group"
             >
-              <div className="aspect-[4/3] rounded-xl overflow-hidden bg-sp-bg-card border border-white/5 relative">
+              <div className="aspect-[4/3] rounded-xl overflow-hidden bg-sp-bg-card border border-sp-border relative">
                 <div
                   className="absolute inset-0"
                   style={{
                     background: `linear-gradient(${135 + i * 30}deg, ${
                       ["#7115FF", "#A412E2", "#B60BFF", "#6D28D9", "#8B5CF6", "#4C1D95"][i % 6]
-                    }33, #11091B)`,
+                    }33, var(--sp-bg-card))`,
                   }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-heading text-3xl font-800 text-white/15 group-hover:text-white/30 transition-all duration-500 group-hover:scale-110">
+                  <span className="font-heading text-3xl font-800 text-sp-white/20 group-hover:text-sp-white/40 transition-all duration-500 group-hover:scale-110">
                     {item.title}
                   </span>
                 </div>

@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import Image from "next/image";
 
 const PARTNERS = [
@@ -16,38 +12,50 @@ const PARTNERS = [
   { name: "Google Analytics", logo: "/images/partners/googleanalytics.svg" },
 ];
 
+// Pure CSS marquee — no GSAP, no JS animation loop.
 export default function Partners() {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!trackRef.current) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-    const w = trackRef.current.scrollWidth / 2;
-    const tween = gsap.to(trackRef.current, { x: -w, duration: 25, ease: "none", repeat: -1 });
-    return () => { tween.kill(); };
-  }, []);
-
   return (
-    <section className="py-20 md:py-28 bg-sp-bg-secondary border-y border-white/[0.06] overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 mb-12">
-        <p className="font-body text-sm uppercase tracking-[0.2em] text-sp-text/40">Technology & Platform Partners</p>
+    <section className="py-20 md:py-24 bg-sp-bg-secondary border-y border-sp-border overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24 mb-10">
+        <p className="font-body text-sm uppercase tracking-[0.2em] text-sp-text/45">
+          Technology &amp; Platform Partners
+        </p>
       </div>
-      <div ref={trackRef} className="flex items-center gap-10 md:gap-14 whitespace-nowrap" aria-hidden="true">
-        {[...PARTNERS, ...PARTNERS].map((partner, i) => (
-          <div key={`p-${i}`} className="shrink-0 flex items-center gap-3 px-6 py-3 border border-white/[0.06] rounded-xl hover:border-white/15 transition-colors duration-300">
-            <Image
-              src={partner.logo}
-              alt={partner.name}
-              width={24}
-              height={24}
-              className="w-5 h-5 opacity-50"
-              unoptimized
-            />
-            <span className="font-body text-sm text-sp-text/40 hover:text-sp-text/70 transition-colors duration-300">{partner.name}</span>
+      <div className="partners-marquee flex items-center gap-12 md:gap-16 whitespace-nowrap will-change-transform" aria-hidden="true">
+        {[0, 1].map((set) => (
+          <div key={set} className="flex shrink-0 items-center gap-12 md:gap-16">
+            {PARTNERS.map((partner) => (
+              <div
+                key={`${set}-${partner.name}`}
+                className="shrink-0 flex items-center gap-4 px-7 py-3.5 md:px-9 md:py-4.5 border border-sp-border rounded-2xl"
+              >
+                <Image
+                  src={partner.logo}
+                  alt={partner.name}
+                  width={36}
+                  height={36}
+                  className="partner-logo-mark w-7 h-7 md:w-8 md:h-8 opacity-80"
+                  unoptimized
+                />
+                <span className="font-body text-base md:text-lg font-500 text-sp-text/75">
+                  {partner.name}
+                </span>
+              </div>
+            ))}
           </div>
         ))}
       </div>
+
+      <style>{`
+        @keyframes partners-x {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-50%, 0, 0); }
+        }
+        .partners-marquee { animation: partners-x 50s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .partners-marquee { animation: none; }
+        }
+      `}</style>
     </section>
   );
 }

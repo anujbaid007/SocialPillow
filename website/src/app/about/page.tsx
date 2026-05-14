@@ -1,12 +1,51 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BRAND, STATS, CLIENTS } from "@/lib/constants";
 import GlowCard from "@/components/ui/GlowCard";
+import { RevealImageList } from "@/components/ui/reveal-images";
 
-gsap.registerPlugin(ScrollTrigger);
+// Hover-reveal preview of what we do — image pairs evoke the discipline.
+// Items mirror the three SOLUTIONS but with editorial photography pulled
+// from Unsplash so the section reads as a tactile gallery, not a list.
+const REVEAL_ITEMS: Parameters<typeof RevealImageList>[0]["items"] = [
+  {
+    text: "Brand",
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?w=240&auto=format&fit=crop&q=70",
+        alt: "Identity system on press",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1567262439850-1d4dc1fefdd0?w=240&auto=format&fit=crop&q=70",
+        alt: "Logo studies",
+      },
+    ],
+  },
+  {
+    text: "Content",
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=240&auto=format&fit=crop&q=70",
+        alt: "Editorial layout",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=240&auto=format&fit=crop&q=70",
+        alt: "Creative direction",
+      },
+    ],
+  },
+  {
+    text: "Media",
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1575995872537-3793d29d972c?w=240&auto=format&fit=crop&q=70",
+        alt: "Performance media",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=240&auto=format&fit=crop&q=70",
+        alt: "Analytics dashboard",
+      },
+    ],
+  },
+];
 
 const PRINCIPLES = [
   {
@@ -53,67 +92,11 @@ const TEAM = [
 ];
 
 export default function AboutPage() {
-  const pageRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".about-heading",
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 0.2 }
-      );
-
-      gsap.fromTo(
-        ".about-mission-word",
-        { opacity: 0.1 },
-        {
-          opacity: 1,
-          ease: "none",
-          stagger: 0.05,
-          scrollTrigger: {
-            trigger: ".mission-section",
-            start: "top 70%",
-            end: "bottom 50%",
-            scrub: true,
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".principle-card",
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".principles-grid", start: "top 75%" },
-        }
-      );
-
-      gsap.fromTo(
-        ".stat-block",
-        { scale: 0.8, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "back.out(1.7)",
-          scrollTrigger: { trigger: ".stats-section", start: "top 75%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, []);
-
   const missionText =
     "Our mission is taking the best of Indian creative talent to the world, building brands that truly connect with their audiences and drive meaningful growth.";
 
   return (
-    <div ref={pageRef}>
+    <div>
       {/* Hero */}
       <section className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
         <div className="max-w-[1440px] mx-auto">
@@ -149,13 +132,20 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* What we do — hover-reveal image gallery */}
+      <section className="py-24 md:py-32 px-6 md:px-12 lg:px-18 bg-sp-bg">
+        <div className="max-w-[1440px] mx-auto">
+          <RevealImageList heading="What we do" items={REVEAL_ITEMS} />
+        </div>
+      </section>
+
       {/* Stats */}
       <section className="stats-section py-20 px-6 md:px-12 lg:px-18 bg-sp-bg">
         <div className="max-w-[1440px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="stat-block text-center p-8 rounded-2xl bg-sp-bg-card border border-white/5"
+              className="stat-block text-center p-8 rounded-2xl bg-sp-bg-card border border-sp-border"
             >
               <p className="font-heading text-4xl md:text-5xl font-900 text-sp-purple">
                 {stat.value}
@@ -214,10 +204,10 @@ export default function AboutPage() {
             {TEAM.map((member, i) => (
               <div
                 key={i}
-                className="group relative rounded-2xl overflow-hidden bg-sp-bg-card border border-white/5 hover:border-sp-purple/30 transition-colors duration-300"
+                className="group relative rounded-2xl overflow-hidden bg-sp-bg-card border border-sp-border hover:border-sp-purple/30 transition-colors duration-300"
               >
                 <div className="aspect-[3/4] bg-gradient-to-br from-sp-purple/20 to-sp-bg-dark flex items-center justify-center">
-                  <span className="font-heading text-6xl font-900 text-white/10 group-hover:text-white/20 transition-colors">
+                  <span className="font-heading text-6xl font-900 text-sp-white/20 group-hover:text-sp-white/35 transition-colors">
                     {member.name.charAt(0)}
                   </span>
                 </div>
@@ -246,7 +236,7 @@ export default function AboutPage() {
             {CLIENTS.map((client) => (
               <div
                 key={client.name}
-                className="px-6 py-3 border border-white/5 rounded-xl bg-sp-bg-card/50 hover:border-sp-purple/20 transition-colors duration-300"
+                className="px-6 py-3 border border-sp-border rounded-xl bg-sp-bg-card/50 hover:border-sp-purple/20 transition-colors duration-300"
               >
                 <span className="font-body text-sm text-sp-text/40">{client.name}</span>
               </div>

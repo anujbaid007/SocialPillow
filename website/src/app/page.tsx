@@ -1,8 +1,9 @@
 import Hero from "@/components/sections/Hero";
 import Marquee from "@/components/sections/Marquee";
+import Stats from "@/components/sections/Stats";
 import WhatDefinesUs from "@/components/sections/WhatDefinesUs";
+import Solutions from "@/components/sections/Solutions";
 import CaseStudies from "@/components/sections/CaseStudies";
-import ServicesGrid from "@/components/sections/ServicesGrid";
 import ClientLogos from "@/components/sections/ClientLogos";
 import TrendingBlog from "@/components/sections/TrendingBlog";
 import Partners from "@/components/sections/Partners";
@@ -13,8 +14,9 @@ export default function Home() {
     <>
       <Hero />
       <Marquee />
+      <Stats />
       <WhatDefinesUs />
-      <ServicesGrid />
+      <Solutions />
       <CaseStudies />
       <ClientLogos />
       <TrendingBlog />

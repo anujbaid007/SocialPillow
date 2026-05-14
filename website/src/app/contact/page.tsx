@@ -1,12 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useState, useRef } from "react";
 import { BRAND, SERVICES } from "@/lib/constants";
 import { Send, MapPin, Mail, Phone } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const HEAR_OPTIONS = [
   "Referral",
@@ -36,30 +32,6 @@ export default function ContactPage() {
     );
   };
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".contact-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".form-section",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          stagger: 0.1,
-          scrollTrigger: { trigger: formRef.current, start: "top 80%" },
-        }
-      );
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section ref={heroRef} className="pt-28 pb-20 px-6 md:px-12 lg:px-18">
       <div className="max-w-[1440px] mx-auto">
@@ -87,7 +59,7 @@ export default function ContactPage() {
                   <input
                     type="text"
                     required
-                    className="w-full bg-transparent border-b border-white/10 focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
+                    className="w-full bg-transparent border-b border-sp-border-strong focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
                     placeholder="John Doe"
                   />
                 </div>
@@ -98,7 +70,7 @@ export default function ContactPage() {
                   <input
                     type="text"
                     required
-                    className="w-full bg-transparent border-b border-white/10 focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
+                    className="w-full bg-transparent border-b border-sp-border-strong focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
                     placeholder="Your Company"
                   />
                 </div>
@@ -111,7 +83,7 @@ export default function ContactPage() {
                   <input
                     type="email"
                     required
-                    className="w-full bg-transparent border-b border-white/10 focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
+                    className="w-full bg-transparent border-b border-sp-border-strong focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -119,7 +91,7 @@ export default function ContactPage() {
                   <label className="font-body text-sm text-sp-text/50 mb-2 block">Phone</label>
                   <input
                     type="tel"
-                    className="w-full bg-transparent border-b border-white/10 focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
+                    className="w-full bg-transparent border-b border-sp-border-strong focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300"
                     placeholder="+91 XXXXX XXXXX"
                   />
                 </div>
@@ -139,7 +111,7 @@ export default function ContactPage() {
                       className={`px-5 py-2.5 rounded-full border font-body text-sm transition-all duration-200 ${
                         selectedServices.includes(s.slug)
                           ? "bg-sp-purple border-sp-purple text-white"
-                          : "border-white/10 text-sp-text/50 hover:border-sp-purple/30 hover:text-sp-text/80"
+                          : "border-sp-border-strong text-sp-text/50 hover:border-sp-purple/30 hover:text-sp-text/80"
                       }`}
                     >
                       {s.title}
@@ -156,7 +128,7 @@ export default function ContactPage() {
                 <textarea
                   required
                   rows={4}
-                  className="w-full bg-transparent border-b border-white/10 focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300 resize-none"
+                  className="w-full bg-transparent border-b border-sp-border-strong focus:border-sp-purple py-4 text-sp-white font-body text-lg outline-none transition-colors duration-300 resize-none"
                   placeholder="Tell us about your project, goals, and timeline..."
                 />
               </div>
@@ -175,7 +147,7 @@ export default function ContactPage() {
                       className={`px-4 py-2 rounded-full border font-body text-xs transition-all duration-200 ${
                         hearAbout.includes(option)
                           ? "bg-sp-purple border-sp-purple text-white"
-                          : "border-white/10 text-sp-text/40 hover:border-sp-purple/30"
+                          : "border-sp-border-strong text-sp-text/40 hover:border-sp-purple/30"
                       }`}
                     >
                       {option}
@@ -197,7 +169,7 @@ export default function ContactPage() {
 
           {/* Sidebar */}
           <div className="space-y-8">
-            <div className="p-6 rounded-2xl bg-sp-bg-card border border-white/5">
+            <div className="p-6 rounded-2xl bg-sp-bg-card border border-sp-border">
               <div className="flex items-center gap-3 mb-4">
                 <MapPin size={18} className="text-sp-purple" />
                 <span className="font-heading text-base font-700 text-sp-white">Office</span>
@@ -207,7 +179,7 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-sp-bg-card border border-white/5">
+            <div className="p-6 rounded-2xl bg-sp-bg-card border border-sp-border">
               <div className="flex items-center gap-3 mb-4">
                 <Mail size={18} className="text-sp-purple" />
                 <span className="font-heading text-base font-700 text-sp-white">Email</span>
@@ -220,7 +192,7 @@ export default function ContactPage() {
               </a>
             </div>
 
-            <div className="p-6 rounded-2xl bg-sp-bg-card border border-white/5">
+            <div className="p-6 rounded-2xl bg-sp-bg-card border border-sp-border">
               <div className="flex items-center gap-3 mb-4">
                 <Phone size={18} className="text-sp-purple" />
                 <span className="font-heading text-base font-700 text-sp-white">Phone</span>
@@ -229,7 +201,7 @@ export default function ContactPage() {
             </div>
 
             {/* Social */}
-            <div className="p-6 rounded-2xl bg-sp-bg-card border border-white/5">
+            <div className="p-6 rounded-2xl bg-sp-bg-card border border-sp-border">
               <p className="font-heading text-base font-700 text-sp-white mb-4">Follow Us</p>
               <div className="flex flex-col gap-2">
                 {Object.entries(BRAND.social).map(([platform, url]) => (

@@ -1,70 +1,18 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { PORTFOLIO } from "@/lib/constants";
 import { PORTFOLIO_DETAILS } from "@/lib/data";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function CaseStudyDetail({ slug }: { slug: string }) {
-  const pageRef = useRef<HTMLDivElement>(null);
-
   const detail = PORTFOLIO_DETAILS[slug];
   const currentIndex = PORTFOLIO.findIndex((p) => p.slug === slug);
   const nextProject = PORTFOLIO[(currentIndex + 1) % PORTFOLIO.length];
   const gradientColor = ["#7115FF", "#A412E2", "#B60BFF", "#6D28D9", "#8B5CF6", "#4C1D95"][currentIndex % 6];
 
-  useEffect(() => {
-    if (!detail) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".case-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".case-meta",
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power2.out", delay: 0.5 }
-      );
-      gsap.fromTo(
-        ".case-section",
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".case-content", start: "top 75%" },
-        }
-      );
-      gsap.fromTo(
-        ".result-item",
-        { x: -30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".results-section", start: "top 80%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, [detail]);
-
   if (!detail) return null;
 
   return (
-    <div ref={pageRef}>
+    <div>
       {/* Hero */}
       <section className="pt-28 pb-16 px-6 md:px-12 lg:px-18">
         <div className="max-w-[1440px] mx-auto">
@@ -104,11 +52,11 @@ export default function CaseStudyDetail({ slug }: { slug: string }) {
             <div
               className="absolute inset-0"
               style={{
-                background: `linear-gradient(135deg, ${gradientColor}40, #11091B)`,
+                background: `linear-gradient(135deg, ${gradientColor}40, var(--sp-bg-card))`,
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-heading text-5xl md:text-7xl font-900 text-white/10">
+              <span className="font-heading text-5xl md:text-7xl font-900 text-sp-white/15">
                 {detail.title}
               </span>
             </div>
@@ -145,7 +93,7 @@ export default function CaseStudyDetail({ slug }: { slug: string }) {
                 {detail.services.map((s) => (
                   <span
                     key={s}
-                    className="px-3 py-1.5 border border-white/10 rounded-full font-body text-xs text-sp-text/50"
+                    className="px-3 py-1.5 border border-sp-border-strong rounded-full font-body text-xs text-sp-text/50"
                   >
                     {s}
                   </span>
@@ -199,7 +147,7 @@ export default function CaseStudyDetail({ slug }: { slug: string }) {
             {detail.results.map((result, i) => (
               <div
                 key={i}
-                className="result-item p-6 rounded-2xl bg-sp-bg-card border border-white/5"
+                className="result-item p-6 rounded-2xl bg-sp-bg-card border border-sp-border"
               >
                 <div className="flex items-start gap-4">
                   <span

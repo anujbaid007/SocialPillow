@@ -1,110 +1,61 @@
-"use client";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-import { HeroParallax, HeroProduct } from "@/components/blocks/hero-parallax";
-
-const HERO_PRODUCTS: HeroProduct[] = [
-  {
-    title: "Social Media Strategy",
-    link: "/services/social-media",
-    gradient: "linear-gradient(135deg, #7115FF 0%, #1a0533 50%, #0a0118 100%)",
-    icon: "📱",
-  },
-  {
-    title: "Hero Motocorp Campaign",
-    link: "/work/hero-motocorp",
-    gradient: "linear-gradient(135deg, #B60BFF 0%, #2d0845 50%, #0a0118 100%)",
-    icon: "🏍️",
-  },
-  {
-    title: "Brand Identity Design",
-    link: "/services/branding",
-    gradient: "linear-gradient(135deg, #A412E2 0%, #1e0a35 50%, #06010E 100%)",
-    icon: "🎨",
-  },
-  {
-    title: "JBL Feel The Bass",
-    link: "/work/jbl-feel-the-bass",
-    gradient: "linear-gradient(135deg, #FF6B2B 0%, #331206 50%, #0a0118 100%)",
-    icon: "🎧",
-  },
-  {
-    title: "SEO & Growth",
-    link: "/services/seo",
-    gradient: "linear-gradient(135deg, #15B8FF 0%, #042a3d 50%, #06010E 100%)",
-    icon: "📈",
-  },
-  {
-    title: "Uber India Creative",
-    link: "/work/uber-india",
-    gradient: "linear-gradient(135deg, #00C853 0%, #0a2e14 50%, #06010E 100%)",
-    icon: "🚗",
-  },
-  {
-    title: "Performance Marketing",
-    link: "/services/performance-marketing",
-    gradient: "linear-gradient(135deg, #FF1744 0%, #33050d 50%, #0a0118 100%)",
-    icon: "🎯",
-  },
-  {
-    title: "Shudh — Organic Branding",
-    link: "/work/shudh",
-    gradient: "linear-gradient(135deg, #76FF03 0%, #1a3300 50%, #06010E 100%)",
-    icon: "🌿",
-  },
-  {
-    title: "Content Strategy",
-    link: "/services/content-strategy",
-    gradient: "linear-gradient(135deg, #FFD600 0%, #332b00 50%, #0a0118 100%)",
-    icon: "✍️",
-  },
-  {
-    title: "WRNING — Fashion Brand",
-    link: "/work/wrning",
-    gradient: "linear-gradient(135deg, #FF4081 0%, #330d1a 50%, #0a0118 100%)",
-    icon: "👕",
-  },
-  {
-    title: "Influencer Marketing",
-    link: "/services/social-media",
-    gradient: "linear-gradient(135deg, #E040FB 0%, #2d0833 50%, #06010E 100%)",
-    icon: "⭐",
-  },
-  {
-    title: "Hamari Asha Launch",
-    link: "/work/hamari-asha",
-    gradient: "linear-gradient(135deg, #FFAB40 0%, #33220d 50%, #0a0118 100%)",
-    icon: "🕯️",
-  },
-  {
-    title: "Website Development",
-    link: "/services/branding",
-    gradient: "linear-gradient(135deg, #536DFE 0%, #111633 50%, #06010E 100%)",
-    icon: "💻",
-  },
-  {
-    title: "BMW Digital Presence",
-    link: "/work",
-    gradient: "linear-gradient(135deg, #40C4FF 0%, #0d2833 50%, #06010E 100%)",
-    icon: "🚙",
-  },
-  {
-    title: "Creative Direction",
-    link: "/services/content-strategy",
-    gradient: "linear-gradient(135deg, #7C4DFF 0%, #190f33 50%, #06010E 100%)",
-    icon: "🎬",
-  },
-];
+// Pure-CSS staggered fade-up (sp-fade-up keyframe in globals.css).
+// Respects prefers-reduced-motion via the global media query.
+const staggerDelay = (i: number) => ({ animationDelay: `${i * 90}ms` });
 
 export default function Hero() {
   return (
-    <section className="relative bg-sp-bg">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sp-bg via-sp-bg to-sp-bg-secondary" />
-      {/* Static orb glows */}
-      <div aria-hidden="true" className="pointer-events-none">
-        <div className="absolute top-[12%] left-[8%] z-0 w-[500px] h-[500px] bg-sp-purple/8 rounded-full blur-[120px]" />
-        <div className="absolute top-[35%] right-[3%] z-0 w-[600px] h-[600px] bg-purple-600/6 rounded-full blur-[120px]" />
+    <section className="relative overflow-hidden bg-sp-bg pt-40 md:pt-48 lg:pt-56 pb-24 md:pb-32 px-6 md:px-16 lg:px-24">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-[18%] right-[5%] w-[480px] h-[480px] rounded-full opacity-40 blur-[140px] -z-0"
+        style={{ background: "radial-gradient(circle, rgba(113,21,255,0.55), transparent 70%)" }}
+      />
+
+      <div className="relative z-10 max-w-[1400px] mx-auto">
+        <p
+          className="sp-fade-up font-body text-sm md:text-base uppercase tracking-[0.24em] text-sp-purple mb-8"
+          style={staggerDelay(0)}
+        >
+          Marketing You.
+        </p>
+
+        <h1
+          className="sp-fade-up font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] xl:text-[8rem] font-900 leading-[0.95] tracking-[-0.03em] text-sp-white max-w-[18ch]"
+          style={staggerDelay(1)}
+        >
+          Where Brands Meet <span className="text-sp-purple">Success</span>
+        </h1>
+
+        <p
+          className="sp-fade-up font-body text-lg md:text-xl text-sp-text/70 leading-relaxed mt-8 md:mt-10 max-w-[640px]"
+          style={staggerDelay(2)}
+        >
+          Social Pillow empowers businesses and founders to thrive globally with
+          compelling visual storytelling and impactful user experiences.
+        </p>
+
+        <div
+          className="sp-fade-up flex flex-wrap items-center gap-4 mt-10 md:mt-14"
+          style={staggerDelay(3)}
+        >
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-3 px-8 py-4 min-h-[48px] bg-sp-purple hover:bg-sp-purple-light text-white rounded-full font-body text-base font-500 transition-colors"
+          >
+            Start a Project
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+          <Link
+            href="/work"
+            className="inline-flex items-center gap-3 px-8 py-4 min-h-[48px] border border-sp-border-strong text-sp-text/80 hover:text-sp-white hover:border-sp-purple/50 rounded-full font-body text-base transition-colors"
+          >
+            View Our Work
+          </Link>
+        </div>
       </div>
-      <HeroParallax products={HERO_PRODUCTS} />
     </section>
   );
 }

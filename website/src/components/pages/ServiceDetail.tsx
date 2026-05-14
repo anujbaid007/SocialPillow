@@ -1,69 +1,17 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { SERVICES } from "@/lib/constants";
 import { SERVICE_DETAILS } from "@/lib/data";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function ServiceDetail({ slug }: { slug: string }) {
-  const pageRef = useRef<HTMLDivElement>(null);
-
   const detail = SERVICE_DETAILS[slug];
   const currentIndex = SERVICES.findIndex((s) => s.slug === slug);
   const nextService = SERVICES[(currentIndex + 1) % SERVICES.length];
 
-  useEffect(() => {
-    if (!detail) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".detail-heading",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        ".detail-body",
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.4 }
-      );
-      gsap.fromTo(
-        ".feature-item",
-        { x: -30, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.08,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".features-section", start: "top 80%" },
-        }
-      );
-      gsap.fromTo(
-        ".process-card",
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: { trigger: ".process-grid", start: "top 80%" },
-        }
-      );
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, [detail]);
-
   if (!detail) return null;
 
   return (
-    <div ref={pageRef}>
+    <div>
       {/* Hero */}
       <section className="pt-28 pb-16 px-6 md:px-12 lg:px-18">
         <div className="max-w-[1440px] mx-auto">
@@ -92,37 +40,79 @@ export default function ServiceDetail({ slug }: { slug: string }) {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="features-section py-20 px-6 md:px-12 lg:px-18 bg-sp-bg-secondary">
-        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div>
+      {/* Features — sticky side-menu + scrolling cards (TechPillow pattern).
+          Left column stays pinned while the right column's capability cards
+          scroll past. Cards are tall enough that the grid scrolls for ~1.5
+          viewports on desktop, making the pin feel earned. */}
+      <section className="features-section py-24 md:py-32 px-6 md:px-12 lg:px-18 bg-sp-bg-secondary">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          {/* Sticky side menu */}
+          <aside className="lg:col-span-5 lg:sticky lg:top-28 self-start">
             <p
-              className="font-body text-sm uppercase tracking-widest mb-3"
+              className="font-body text-sm uppercase tracking-[0.2em] mb-4"
               style={{ color: detail.color }}
             >
               What We Deliver
             </p>
-            <h2 className="font-heading text-3xl md:text-4xl font-800 text-sp-white">
+            <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-900 text-sp-white leading-[1.05] tracking-[-0.02em]">
               Our {detail.title} Services
             </h2>
-          </div>
-          <div className="space-y-4">
-            {detail.features.map((feature, i) => (
-              <div
-                key={i}
-                className="feature-item flex items-start gap-4 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors"
-              >
-                <CheckCircle2
-                  size={20}
-                  className="shrink-0 mt-0.5"
-                  style={{ color: detail.color }}
-                />
-                <span className="font-body text-base text-sp-text/70">
-                  {feature}
-                </span>
-              </div>
-            ))}
-          </div>
+            <p className="font-body text-base md:text-lg text-sp-text/60 leading-relaxed mt-6 max-w-[440px]">
+              The capabilities we bring to every {detail.title.toLowerCase()} engagement
+              — battle-tested, outcome-driven, and tailored to your business.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 mt-8 px-6 py-3 min-h-[44px] rounded-full font-body text-sm font-500 text-white transition-colors"
+              style={{ backgroundColor: detail.color }}
+            >
+              Start a project
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </aside>
+
+          {/* Scrolling capability cards — each card has number + icon +
+              title + descriptive blurb. Handles both legacy string-only
+              features and the new rich object shape. */}
+          <ol className="lg:col-span-7 space-y-4 md:space-y-5">
+            {detail.features.map((feature, i) => {
+              const f =
+                typeof feature === "string"
+                  ? { title: feature, description: "" }
+                  : feature;
+              return (
+                <li
+                  key={i}
+                  className="feature-item group p-6 md:p-7 lg:p-8 rounded-2xl bg-sp-bg-card border border-sp-border transition-[border-color,transform,background-color] duration-300 ease-out hover:-translate-y-0.5 hover:border-sp-border-strong"
+                >
+                  <div className="flex items-start gap-5 md:gap-6">
+                    <span
+                      className="font-heading text-xl md:text-2xl font-900 tabular-nums shrink-0 leading-none pt-0.5 transition-colors duration-300"
+                      style={{ color: detail.color }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <CheckCircle2
+                      size={22}
+                      className="shrink-0 mt-0.5 transition-transform duration-300 ease-out group-hover:scale-110"
+                      style={{ color: detail.color }}
+                      aria-hidden="true"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-heading text-lg md:text-xl font-700 text-sp-white leading-snug">
+                        {f.title}
+                      </h3>
+                      {f.description && (
+                        <p className="font-body text-sm md:text-base text-sp-text/65 leading-relaxed mt-2.5 md:mt-3">
+                          {f.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
 
@@ -143,7 +133,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
             {detail.process.map((step, i) => (
               <div
                 key={i}
-                className="process-card p-8 rounded-2xl bg-sp-bg-card border border-white/5 hover:border-white/10 transition-colors group"
+                className="process-card p-8 rounded-2xl bg-sp-bg-card border border-sp-border hover:border-sp-border-strong transition-colors group"
               >
                 <span
                   className="font-heading text-5xl font-900 block mb-4"
@@ -185,7 +175,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
             </Link>
             <Link
               href={`/services/${nextService.slug}`}
-              className="inline-flex items-center gap-2 px-6 py-4 border border-white/10 hover:border-sp-purple/30 text-sp-text/50 hover:text-sp-white rounded-full font-body text-sm transition-all"
+              className="inline-flex items-center gap-2 px-6 py-4 border border-sp-border-strong hover:border-sp-purple/40 text-sp-text/50 hover:text-sp-white rounded-full font-body text-sm transition-all"
             >
               Next: {nextService.title}
               <ArrowRight size={14} />

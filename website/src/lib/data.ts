@@ -1,5 +1,11 @@
 // Extended data for dynamic detail pages
 
+// Each `feature` is now a rich object with a title + descriptive blurb.
+// Legacy single-string entries are still accepted via the union below
+// — the renderer normalises them — but new content should always use
+// the object shape.
+export type ServiceFeature = string | { title: string; description: string };
+
 export const SERVICE_DETAILS: Record<
   string,
   {
@@ -8,10 +14,104 @@ export const SERVICE_DETAILS: Record<
     description: string;
     color: string;
     longDescription: string;
-    features: string[];
+    features: ServiceFeature[];
     process: { step: string; description: string }[];
   }
 > = {
+  "brand-strategy": {
+    title: "Brand Strategy",
+    subtitle: "Identity & Positioning",
+    description:
+      "It's more than just a logo — it's your legacy. We build brand identities that endure.",
+    color: "#7115FF",
+    longDescription:
+      "Your brand is the lasting impression you leave on every customer, partner and team member. We build comprehensive brand identities — from positioning and messaging to logo systems, packaging and guidelines — so every touchpoint reinforces who you are and where you're going.",
+    features: [
+      {
+        title: "Brand positioning & messaging",
+        description:
+          "Where you stand in your category and the story you tell every day. We define the strategic foundation that guides every brand decision.",
+      },
+      {
+        title: "Logo design & visual identity",
+        description:
+          "Marks built to last. We design logo systems, choose typography and colour palettes, and define how every visual element fits together.",
+      },
+      {
+        title: "Packaging & print design",
+        description:
+          "Packaging that turns shelf into demand. From structural design to retail-ready production files and printer specs.",
+      },
+      {
+        title: "Brand guidelines & systems",
+        description:
+          "A single source of truth so every team member, agency and vendor applies the brand consistently across every touchpoint.",
+      },
+      {
+        title: "Naming & verbal identity",
+        description:
+          "Names worth remembering and a brand voice with personality. Verbal systems that pair seamlessly with the visual language.",
+      },
+      {
+        title: "Brand collateral & stationery",
+        description:
+          "Business cards, letterheads, presentation templates, signage — every supporting asset engineered to reinforce the brand.",
+      },
+    ],
+    process: [
+      { step: "Discover", description: "Deep research into your category, audience and competitive landscape." },
+      { step: "Define", description: "Establish positioning, personality and the core messaging framework." },
+      { step: "Design", description: "Craft a visual system — logo, typography, color and imagery — that scales." },
+      { step: "Deliver", description: "Hand off comprehensive guidelines and assets for consistent application." },
+    ],
+  },
+  "media-strategy": {
+    title: "Media Strategy",
+    subtitle: "Performance & Brand Media",
+    description:
+      "Not just generating leads — building lasting relationships. Performance and brand media planned together.",
+    color: "#B60BFF",
+    longDescription:
+      "Media that earns attention and converts it. We plan and buy across paid social, search, programmatic and emerging channels — putting the right message in front of the right audience at the right moment, with the analytics to prove it.",
+    features: [
+      {
+        title: "Paid social & performance ads",
+        description:
+          "Full-funnel campaigns across Meta, TikTok, LinkedIn and YouTube. Creative, audience strategy, bidding, and weekly optimisation built around your KPIs.",
+      },
+      {
+        title: "Search & SEO",
+        description:
+          "Paid Search, Shopping and Performance Max campaigns paired with technical and content SEO that compounds month over month.",
+      },
+      {
+        title: "Programmatic & display",
+        description:
+          "Targeted programmatic buys across DSPs, premium publishers and CTV. Brand safety, frequency capping and creative refresh built in.",
+      },
+      {
+        title: "Influencer & creator media",
+        description:
+          "Vetted creator partnerships, brief development, contract management and content QA. Whitelisted to amplify what already performs.",
+      },
+      {
+        title: "Analytics & attribution",
+        description:
+          "Cross-channel measurement with first-party data, server-side tracking and dashboards that prove what each rupee actually returned.",
+      },
+      {
+        title: "Cross-channel media planning",
+        description:
+          "Channel-agnostic plans that share creative, audience signals and budget across paid social, search, programmatic and offline.",
+      },
+    ],
+    process: [
+      { step: "Research", description: "Identify audiences, channels and competitive ad landscapes." },
+      { step: "Plan", description: "Build a media mix and campaign architecture mapped to business goals." },
+      { step: "Activate", description: "Launch creative, set up tracking and start the optimisation cycle." },
+      { step: "Scale", description: "Double down on what works, cut what doesn't, and report on real ROI." },
+    ],
+  },
   "social-media": {
     title: "Social Media",
     subtitle: "Strategy & Management",
@@ -113,12 +213,36 @@ export const SERVICE_DETAILS: Record<
     longDescription:
       "Great content doesn't just fill feeds — it drives action. We develop content strategies that align with your business objectives, resonate with your audience, and perform across every channel. From editorial and copywriting to video production and motion graphics, we create content that converts.",
     features: [
-      "Content Strategy & Editorial Planning",
-      "Copywriting & Brand Voice Development",
-      "Video Production & Motion Graphics",
-      "Blog & Article Writing",
-      "Email Marketing Content",
-      "Infographics & Visual Content",
+      {
+        title: "Content strategy & editorial planning",
+        description:
+          "Audience research, content pillars and editorial calendars that map every piece to the customer journey and business goals.",
+      },
+      {
+        title: "Copywriting & brand voice development",
+        description:
+          "A brand voice that earns trust. Headlines, ad copy, web content and long-form editorial that sound unmistakably like you.",
+      },
+      {
+        title: "Video production & motion graphics",
+        description:
+          "Reels, ads, brand films and motion graphics produced in-house from script to final cut — built for the platforms that matter.",
+      },
+      {
+        title: "Photography & art direction",
+        description:
+          "Product, lifestyle and brand photography led by art directors who understand your visual system end-to-end.",
+      },
+      {
+        title: "Influencer & creator collaborations",
+        description:
+          "Curated creator partnerships, briefs, contract management and content QA — turning third-party voices into trusted brand storytellers.",
+      },
+      {
+        title: "Email & lifecycle content",
+        description:
+          "Newsletters, drip campaigns and lifecycle emails written and designed for measurable engagement and revenue.",
+      },
     ],
     process: [
       { step: "Map", description: "Audit existing content, identify gaps, and map content to the customer journey." },

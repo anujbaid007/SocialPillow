@@ -1,9 +1,5 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { CLIENTS } from "@/lib/constants";
 import Image from "next/image";
+import { CLIENTS } from "@/lib/constants";
 
 const LOGO_TREATMENTS: Record<string, string> = {
   "Hero Motocorp": "max-w-[240px] max-h-[72px]",
@@ -25,10 +21,6 @@ const LOGO_TREATMENTS: Record<string, string> = {
   Hamariasha: "max-w-[235px] max-h-[72px]",
 };
 
-const FILTER_OVERRIDES: Record<string, string> = {
-  Uber: "invert",
-};
-
 const SLOT_TREATMENTS: Record<string, string> = {
   "Hero Motocorp": "min-w-[240px] md:min-w-[270px]",
   BMW: "min-w-[104px] md:min-w-[124px]",
@@ -39,6 +31,73 @@ const SLOT_TREATMENTS: Record<string, string> = {
   Archies: "min-w-[165px] md:min-w-[185px]",
   Uber: "min-w-[148px] md:min-w-[168px]",
 };
+
+// Pure-CSS infinite marquee — no GSAP, no JS animation loop. The row
+// renders the logo set twice and animates translateX from 0 to -50% which
+// looks seamless because the second half is an exact copy of the first.
+export default function ClientLogos() {
+  const half = Math.ceil(CLIENTS.length / 2);
+  const row1 = CLIENTS.slice(0, half);
+  const row2 = CLIENTS.slice(half);
+
+  return (
+    <section className="relative overflow-hidden bg-sp-bg py-24 text-sp-white md:py-32">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(113,21,255,0.10),transparent_34%)]" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
+
+      <div className="mx-auto mb-14 max-w-[1400px] px-6 text-center md:px-16 lg:px-24">
+        <p className="mb-4 font-body text-xs uppercase tracking-[0.24em] text-sp-purple">Trusted By</p>
+        <h2 className="font-heading text-4xl font-800 text-sp-white md:text-6xl lg:text-7xl">
+          Brands We&apos;ve Worked With
+        </h2>
+      </div>
+
+      {/* Row 1 — scrolls left */}
+      <div className="mb-8 overflow-hidden">
+        <div className="sp-marquee-left flex items-center gap-0 md:gap-1 whitespace-nowrap will-change-transform">
+          {[0, 1].map((set) => (
+            <div key={set} className="flex shrink-0 items-center gap-0 md:gap-1">
+              {row1.map((client) => (
+                <LogoMark key={`r1-${set}-${client.name}`} client={client} />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 2 — scrolls right (mirror) */}
+      <div className="overflow-hidden">
+        <div className="sp-marquee-right flex items-center gap-0 md:gap-1 whitespace-nowrap will-change-transform">
+          {[0, 1].map((set) => (
+            <div key={set} className="flex shrink-0 items-center gap-0 md:gap-1">
+              {row2.map((client) => (
+                <LogoMark key={`r2-${set}-${client.name}`} client={client} featured />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes sp-marquee-left {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-50%, 0, 0); }
+        }
+        @keyframes sp-marquee-right {
+          from { transform: translate3d(-50%, 0, 0); }
+          to   { transform: translate3d(0, 0, 0); }
+        }
+        .sp-marquee-left  { animation: sp-marquee-left 60s linear infinite; }
+        .sp-marquee-right { animation: sp-marquee-right 70s linear infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .sp-marquee-left,
+          .sp-marquee-right { animation: none; }
+        }
+      `}</style>
+    </section>
+  );
+}
 
 function LogoMark({
   client,
@@ -58,96 +117,11 @@ function LogoMark({
         alt={client.name}
         width={featured ? 270 : 210}
         height={featured ? 90 : 68}
-        className={`client-logo-image h-auto w-auto object-contain grayscale contrast-125 opacity-[var(--logo-opacity,0.42)] brightness-[var(--logo-brightness,1.45)] mix-blend-screen transition-all duration-300 hover:scale-[1.03] hover:opacity-90 hover:brightness-200 ${
+        className={`client-logo-image pointer-events-none select-none h-auto w-auto object-contain ${
           LOGO_TREATMENTS[client.name] ?? "max-w-[150px] max-h-[46px]"
-        } ${FILTER_OVERRIDES[client.name] ?? ""}`}
-        style={{
-          transform: "scale(var(--logo-scale, 1))",
-        }}
+        }`}
         unoptimized
       />
     </div>
-  );
-}
-
-export default function ClientLogos() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!row1Ref.current || !row2Ref.current) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-    const w1 = row1Ref.current.scrollWidth / 2;
-    const w2 = row2Ref.current.scrollWidth / 2;
-    const t1 = gsap.to(row1Ref.current, { x: -w1, duration: 34, ease: "none", repeat: -1 });
-    const t2 = gsap.fromTo(row2Ref.current, { x: -w2 }, { x: 0, duration: 30, ease: "none", repeat: -1 });
-
-    let isVisible = false;
-    const updateCenterFocus = () => {
-      if (!isVisible) return;
-      const section = sectionRef.current;
-      if (!section) return;
-      const center = window.innerWidth / 2;
-      const radius = Math.max(260, window.innerWidth * 0.28);
-      section.querySelectorAll<HTMLElement>(".client-logo-slot").forEach((slot) => {
-        const rect = slot.getBoundingClientRect();
-        const logoCenter = rect.left + rect.width / 2;
-        const distance = Math.abs(logoCenter - center);
-        const strength = Math.max(0, 1 - distance / radius);
-        slot.style.setProperty("--logo-opacity", String(0.34 + strength * 0.48));
-        slot.style.setProperty("--logo-brightness", String(1.32 + strength * 0.72));
-        slot.style.setProperty("--logo-scale", String(1 + strength * 0.045));
-      });
-    };
-
-    // Only run the ticker when the section is in the viewport
-    const observer = new IntersectionObserver(
-      ([entry]) => { isVisible = entry.isIntersecting; },
-      { rootMargin: "100px" },
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-
-    gsap.ticker.add(updateCenterFocus);
-    return () => {
-      t1.kill();
-      t2.kill();
-      gsap.ticker.remove(updateCenterFocus);
-      observer.disconnect();
-    };
-  }, []);
-
-  const half = Math.ceil(CLIENTS.length / 2);
-  const row1 = CLIENTS.slice(0, half);
-  const row2 = CLIENTS.slice(half);
-
-  return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-sp-bg py-24 text-sp-white md:py-32">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(113,21,255,0.10),transparent_34%)]" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
-
-      <div className="mx-auto mb-14 max-w-[1400px] px-6 text-center md:px-16 lg:px-24">
-        <p className="mb-4 font-body text-xs uppercase tracking-[0.24em] text-sp-purple">Trusted By</p>
-        <h2 className="font-heading text-4xl font-800 text-sp-white md:text-6xl lg:text-7xl">Brands We&apos;ve Worked With</h2>
-      </div>
-
-      <div className="mb-8 overflow-hidden">
-        <div ref={row1Ref} className="flex items-center gap-0 md:gap-1 whitespace-nowrap">
-          {[...row1, ...row1].map((client, i) => (
-            <LogoMark key={`r1-${client.name}-${i}`} client={client} />
-          ))}
-        </div>
-      </div>
-
-      <div className="overflow-hidden">
-        <div ref={row2Ref} className="flex items-center gap-0 md:gap-1 whitespace-nowrap">
-          {[...row2, ...row2].map((client, i) => (
-            <LogoMark key={`r2-${client.name}-${i}`} client={client} featured />
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
