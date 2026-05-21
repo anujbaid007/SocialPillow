@@ -102,7 +102,7 @@ function RevealImageList({ heading = "Our services", items }: RevealImageListPro
     <div className="flex flex-col gap-1 rounded-sm bg-background px-8 py-4">
       <h3 className="text-sm font-black uppercase text-muted-foreground">{heading}</h3>
       {list.map((item, index) => (
-        <RevealImageListItem key={index} text={item.text} images={item.images} />
+        <RevealImageListItem key={index} text={item.text} images={item.images} href={item.href} />
       ))}
     </div>
   );
