@@ -116,7 +116,7 @@ export default function Footer() {
           + links) fits within typical viewport heights. */}
       <div
         ref={logoRef}
-        className="flex justify-center pt-2 pb-6 md:pt-4 md:pb-8 px-6"
+        className="flex justify-center pt-12 pb-14 md:pt-16 md:pb-20 lg:pt-20 lg:pb-24 px-6"
       >
         <Link
           href="/contact"
@@ -128,7 +128,7 @@ export default function Footer() {
             alt="Social Pillow"
             width={477}
             height={137}
-            className="h-10 md:h-14 lg:h-20 w-auto"
+            className="h-16 md:h-24 lg:h-32 w-auto"
           />
         </Link>
       </div>
