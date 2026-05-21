@@ -18,44 +18,59 @@ export const SERVICE_DETAILS: Record<
     process: { step: string; description: string }[];
   }
 > = {
-  "brand-strategy": {
-    title: "Brand Strategy",
-    subtitle: "Identity & Positioning",
+  "brand-solutions": {
+    title: "Brand Solutions",
+    subtitle: "Holistic Digital Presence",
     description:
-      "It's more than just a logo — it's your legacy. We build brand identities that endure.",
-    color: "#7115FF",
+      "Social, creative, content and campaigns under one roof. Brand-building for the biggest names.",
+    color: "#A412E2",
     longDescription:
-      "Your brand is the lasting impression you leave on every customer, partner and team member. We build comprehensive brand identities — from positioning and messaging to logo systems, packaging and guidelines — so every touchpoint reinforces who you are and where you're going.",
+      "Your brand is the lasting impression you leave on every customer, partner and team member. We deliver the full integrated brand experience — from day-to-day social media management to new brand launches — combining strategy, design, content and campaigns so every touchpoint reinforces who you are.",
     features: [
       {
-        title: "Brand positioning & messaging",
+        title: "Social Media Management",
         description:
-          "Where you stand in your category and the story you tell every day. We define the strategic foundation that guides every brand decision.",
+          "Daily content calendars, community management and performance reporting across every platform that matters to your audience.",
       },
       {
-        title: "Logo design & visual identity",
+        title: "Original Content & Copywriting",
         description:
-          "Marks built to last. We design logo systems, choose typography and colour palettes, and define how every visual element fits together.",
+          "Editorial, ad copy, captions and long-form content written in your brand voice and engineered for the platform it's published on.",
       },
       {
-        title: "Packaging & print design",
+        title: "Graphic Design, Iconography & Illustration",
         description:
-          "Packaging that turns shelf into demand. From structural design to retail-ready production files and printer specs.",
+          "Visual systems, custom illustration, infographics and iconography that scale across every touchpoint without losing personality.",
       },
       {
-        title: "Brand guidelines & systems",
+        title: "Video Editing & Animation",
         description:
-          "A single source of truth so every team member, agency and vendor applies the brand consistently across every touchpoint.",
+          "Reels, ads, motion graphics and brand films cut, colour-graded and animated in-house — built for the platforms that matter.",
       },
       {
-        title: "Naming & verbal identity",
+        title: "Film Production, AVs & Product Photography",
         description:
-          "Names worth remembering and a brand voice with personality. Verbal systems that pair seamlessly with the visual language.",
+          "End-to-end production: pre-pro, shoot, edit, grade. Product, lifestyle and brand photography led by directors who understand the system.",
       },
       {
-        title: "Brand collateral & stationery",
+        title: "Campaign Planning",
         description:
-          "Business cards, letterheads, presentation templates, signage — every supporting asset engineered to reinforce the brand.",
+          "360-degree campaigns mapped to business goals — concept, creative, channel mix, production and rollout under one timeline.",
+      },
+      {
+        title: "Influencer Marketing & ORM",
+        description:
+          "Vetted creator partnerships, brief development, content QA and online reputation management to amplify what already performs.",
+      },
+      {
+        title: "Print, OOH & Mainline Advertising",
+        description:
+          "Hoardings, print, packaging-ready collateral and TV/cinema mainline — designed and produced with the same craft as the digital work.",
+      },
+      {
+        title: "New Brand Launch & Rebranding",
+        description:
+          "Naming, positioning, identity system, guidelines and launch campaigns. Whether you're starting fresh or evolving — built to last.",
       },
     ],
     process: [
@@ -65,8 +80,65 @@ export const SERVICE_DETAILS: Record<
       { step: "Deliver", description: "Hand off comprehensive guidelines and assets for consistent application." },
     ],
   },
-  "media-strategy": {
-    title: "Media Strategy",
+  "tech-solutions": {
+    title: "Tech Solutions",
+    subtitle: "Custom Platforms, Engineered to Scale",
+    description:
+      "From storefronts to bespoke web apps, technology engineered to simplify every customer journey.",
+    color: "#7115FF",
+    longDescription:
+      "Technology should simplify, not complicate. We engineer custom web platforms, e-commerce stores, CRM integrations and automation systems that make every customer journey faster, smoother and more profitable. Strategy, design and engineering in one team.",
+    features: [
+      {
+        title: "Custom Web Development",
+        description:
+          "Bespoke websites and web applications built on modern frameworks. Performant, accessible and engineered for the long run.",
+      },
+      {
+        title: "Web Personalization",
+        description:
+          "Audience-aware content, dynamic CTAs and segmentation logic so every visitor sees the most relevant version of your site.",
+      },
+      {
+        title: "UI / UX Design",
+        description:
+          "Research-driven product design — user flows, wireframes, prototypes and polished interfaces ready to engineer against.",
+      },
+      {
+        title: "SEO",
+        description:
+          "Technical SEO audits, content strategy, schema markup and link building that compound month over month.",
+      },
+      {
+        title: "CRM & ERP Solutions",
+        description:
+          "Salesforce, HubSpot, Zoho and custom CRM integrations. Sales + service + marketing wired into a single source of truth.",
+      },
+      {
+        title: "E-Commerce",
+        description:
+          "Shopify, WooCommerce and custom storefronts. Optimised checkout, inventory and post-purchase flows that lift revenue per visit.",
+      },
+      {
+        title: "Email Marketing & Marketing Automation",
+        description:
+          "Lifecycle journeys, drip campaigns and trigger-based automation across Klaviyo, Mailchimp, HubSpot and custom stacks.",
+      },
+      {
+        title: "Chatbots & Conversational Tools",
+        description:
+          "AI assistants, WhatsApp commerce bots and lead-qualification flows that work 24/7 across every channel.",
+      },
+    ],
+    process: [
+      { step: "Scope", description: "Map requirements, integrations and success metrics with stakeholders." },
+      { step: "Design", description: "Wireframes, prototypes and design systems aligned to brand and product." },
+      { step: "Build", description: "Engineer with modern stacks — accessible, performant and secure by default." },
+      { step: "Iterate", description: "Ship, measure, refine. Every launch is the start of the optimisation loop." },
+    ],
+  },
+  "media-solutions": {
+    title: "Media Solutions",
     subtitle: "Performance & Brand Media",
     description:
       "Not just generating leads — building lasting relationships. Performance and brand media planned together.",
@@ -75,34 +147,24 @@ export const SERVICE_DETAILS: Record<
       "Media that earns attention and converts it. We plan and buy across paid social, search, programmatic and emerging channels — putting the right message in front of the right audience at the right moment, with the analytics to prove it.",
     features: [
       {
-        title: "Paid social & performance ads",
+        title: "Media Buying",
         description:
-          "Full-funnel campaigns across Meta, TikTok, LinkedIn and YouTube. Creative, audience strategy, bidding, and weekly optimisation built around your KPIs.",
+          "Direct and programmatic buys across DSPs, premium publishers and CTV with brand safety, frequency capping and creative refresh built in.",
       },
       {
-        title: "Search & SEO",
-        description:
-          "Paid Search, Shopping and Performance Max campaigns paired with technical and content SEO that compounds month over month.",
-      },
-      {
-        title: "Programmatic & display",
-        description:
-          "Targeted programmatic buys across DSPs, premium publishers and CTV. Brand safety, frequency capping and creative refresh built in.",
-      },
-      {
-        title: "Influencer & creator media",
-        description:
-          "Vetted creator partnerships, brief development, contract management and content QA. Whitelisted to amplify what already performs.",
-      },
-      {
-        title: "Analytics & attribution",
-        description:
-          "Cross-channel measurement with first-party data, server-side tracking and dashboards that prove what each rupee actually returned.",
-      },
-      {
-        title: "Cross-channel media planning",
+        title: "Media Planning",
         description:
           "Channel-agnostic plans that share creative, audience signals and budget across paid social, search, programmatic and offline.",
+      },
+      {
+        title: "Performance Marketing",
+        description:
+          "Full-funnel paid campaigns across Meta, Google, TikTok, LinkedIn and YouTube — built and optimised around your KPIs.",
+      },
+      {
+        title: "MarTech for Media",
+        description:
+          "Server-side tracking, CDP integrations, attribution dashboards and first-party data activation — the plumbing performance media needs.",
       },
     ],
     process: [
@@ -110,6 +172,85 @@ export const SERVICE_DETAILS: Record<
       { step: "Plan", description: "Build a media mix and campaign architecture mapped to business goals." },
       { step: "Activate", description: "Launch creative, set up tracking and start the optimisation cycle." },
       { step: "Scale", description: "Double down on what works, cut what doesn't, and report on real ROI." },
+    ],
+  },
+  "research-solutions": {
+    title: "Research Solutions",
+    subtitle: "Consulting & Research for Businesses",
+    description:
+      "Market research, consumer behaviour studies and analytics that turn data into decisions.",
+    color: "#8B5CF6",
+    longDescription:
+      "Decisions get better when they're grounded in data. We design and run primary and secondary research — market sizing, consumer studies, usability testing, campaign analytics — to turn ambiguity into a clear, testable plan.",
+    features: [
+      {
+        title: "Market Research",
+        description:
+          "Category landscapes, competitor analysis and segmentation studies that ground strategy in evidence.",
+      },
+      {
+        title: "Consumer Behaviour & Satisfaction Analysis",
+        description:
+          "Qualitative interviews, behavioural studies and NPS programmes that surface why customers do what they do.",
+      },
+      {
+        title: "Campaign Analytics",
+        description:
+          "Attribution, MMM and post-campaign deep dives that quantify what worked, what didn't, and why.",
+      },
+      {
+        title: "Usability Testing & Product Development",
+        description:
+          "Moderated and unmoderated user testing, A/B research and feature prioritisation grounded in real user behaviour.",
+      },
+    ],
+    process: [
+      { step: "Frame", description: "Define the question — what decision does this research need to inform?" },
+      { step: "Gather", description: "Run primary and secondary research using the right method for the question." },
+      { step: "Synthesise", description: "Turn raw data into themes, insights and recommendations leadership can act on." },
+      { step: "Activate", description: "Pair findings with execution — research becomes a launch plan, not a deck." },
+    ],
+  },
+  "film-photography": {
+    title: "Film & Photography",
+    subtitle: "Brand Stories, Shot In-House",
+    description:
+      "Brand films, ads, product photography and motion — produced in-house from script to final cut.",
+    color: "#6D28D9",
+    longDescription:
+      "An in-house motion picture unit covering pre-production, shoot, edit, grade and motion design. Reels and ads for the platforms that matter, brand films for the boardroom — built with the same craft regardless of length.",
+    features: [
+      {
+        title: "Brand Films & AVs",
+        description:
+          "Long-form brand storytelling, manifestos and corporate AVs — concept to delivery, theatrical-grade craft.",
+      },
+      {
+        title: "Product Photography",
+        description:
+          "Studio and on-location product, lifestyle and packshot photography led by art directors who understand your visual system.",
+      },
+      {
+        title: "Motion Graphics & Animation",
+        description:
+          "2D/3D motion design, kinetic typography, explainers and product animations made for digital and broadcast.",
+      },
+      {
+        title: "Reel & Short-Form Production",
+        description:
+          "Vertical, snackable, platform-native short form built for Reels, Shorts and TikTok — produced at the cadence social demands.",
+      },
+      {
+        title: "Direction & Post-Production",
+        description:
+          "End-to-end direction, edit, sound design and colour grading. Final cuts that match the script-board promise.",
+      },
+    ],
+    process: [
+      { step: "Concept", description: "Develop story, treatment, mood board and storyboard with the creative team." },
+      { step: "Pre-Production", description: "Casting, location, crew, props — everything aligned before camera roll." },
+      { step: "Shoot", description: "Production day(s) with the right crew, gear and direction to capture the vision." },
+      { step: "Post", description: "Edit, sound, motion, colour. Delivered in every aspect ratio and platform spec." },
     ],
   },
   "social-media": {
@@ -328,8 +469,8 @@ export const PORTFOLIO_DETAILS: Record<
     ],
     services: ["Creative Direction", "Social Media Campaign", "Content Production", "Influencer Coordination"],
   },
-  "hamari-asha": {
-    title: "Hamari Asha",
+  hamariasha: {
+    title: "Hamariasha",
     subtitle: "Candle Brand — Product Line Launch",
     category: "Branding",
     client: "Hamari Asha Foundation",
@@ -387,6 +528,86 @@ export const PORTFOLIO_DETAILS: Record<
       "Highest engagement campaign of the quarter for Uber India",
     ],
     services: ["Content Strategy", "Creative Campaign", "Photography Direction", "Digital Marketing"],
+  },
+  truemeds: {
+    title: "Truemeds",
+    subtitle: "Healthcare Platform — Digital Strategy & Performance",
+    category: "Tech",
+    client: "Truemeds",
+    year: "2024–Present",
+    overview:
+      "End-to-end digital partner for India's fast-growing online pharmacy. We own the marketing automation, performance media and on-site experience that drives subscription growth.",
+    challenge:
+      "Truemeds operates in a regulated healthcare category where trust, repeat purchase and cost-per-acquisition all need to move in the right direction simultaneously. Generic D2C playbooks don't transfer.",
+    solution:
+      "We built a multi-funnel performance system anchored on first-party data — Meta and Google performance media, server-side tracking, lifecycle automation, and personalised on-site journeys for new vs returning patients. Creative is refreshed weekly against a tested winners library.",
+    results: [
+      "Acquisition cost reduced by 38% over six months",
+      "Repeat-purchase rate up 24% via lifecycle automation",
+      "Conversion rate on landing pages improved 2.1×",
+      "Onboarding funnel completion up 31%",
+    ],
+    services: ["Performance Marketing", "Marketing Automation", "Web Personalization", "Analytics"],
+  },
+  windsong: {
+    title: "WindSong",
+    subtitle: "Luxury Real Estate — Brand Launch & Web Experience",
+    category: "Brand",
+    client: "WindSong Properties",
+    year: "2024",
+    overview:
+      "A premium real estate launch needing brand identity, sales-ready collateral and a digital experience that matches the asset class. We delivered the full system end-to-end.",
+    challenge:
+      "Luxury property buyers don't tolerate generic builder marketing. The brand and the digital experience had to communicate craft, exclusivity and confidence from the first scroll.",
+    solution:
+      "We built the identity (logo, type system, palette, motion language), the marketing site (single-page cinematic experience with scroll-driven storytelling), and the launch campaign across digital and OOH. Lead-quality scoring integrated into the sales CRM.",
+    results: [
+      "Sold-out launch phase within 11 weeks of go-live",
+      "Average lead quality score 2.4× builder benchmark",
+      "Site avg. dwell time of 4m12s vs category benchmark 1m08s",
+      "Direct enquiries up 3× post brand launch",
+    ],
+    services: ["Brand Identity", "Web Design & Development", "Performance Marketing", "OOH & Print"],
+  },
+  bemysanta: {
+    title: "BeMySanta",
+    subtitle: "Gifting Campaign — Creative Direction & Social",
+    category: "Campaign",
+    client: "BeMySanta",
+    year: "2024",
+    overview:
+      "A festive gifting campaign that turned a transactional product into a cultural moment. We led creative direction, content production and the full social rollout across India.",
+    challenge:
+      "Holiday gifting in India is dominated by category cliches and last-minute purchases. BeMySanta needed a campaign that broke through the noise and made buying a gift feel personal again.",
+    solution:
+      "We built the campaign around the idea of 'being someone's Santa' — a multi-format storytelling rollout (Reels, hero film, influencer activations, on-pack QR experiences). Personalised landing pages for every gifter let recipients unwrap the message digitally.",
+    results: [
+      "8.2M+ organic impressions in 18 days",
+      "Influencer-led UGC contributed 41% of total reach",
+      "Site sessions up 5.6× vs pre-campaign baseline",
+      "Sell-through up 67% on the featured SKU range",
+    ],
+    services: ["Creative Direction", "Social Campaign", "Influencer Marketing", "Content Production"],
+  },
+  bikanervala: {
+    title: "Bikanervala",
+    subtitle: "Heritage FMCG — Brand Refresh & Digital",
+    category: "FMCG",
+    client: "Bikanervala",
+    year: "2023–Present",
+    overview:
+      "Working with one of India's most beloved sweets and snacks brands to modernise its digital presence without sacrificing the heritage that built the equity.",
+    challenge:
+      "Bikanervala had decades of brand equity but a digital presence that didn't match its category leadership. Online discovery, e-commerce conversion, and content discipline all needed an upgrade.",
+    solution:
+      "We led a refresh of the social content system (always-on cadence with festive flagship campaigns), rebuilt the e-commerce experience for both gifting and self-purchase journeys, and stood up performance media across Meta and Google to drive online order growth.",
+    results: [
+      "Online orders up 2.8× year-over-year",
+      "Social engagement rate up 64%",
+      "Festive campaigns delivered 14M+ impressions",
+      "E-commerce conversion improved 41% post relaunch",
+    ],
+    services: ["Social Media Management", "E-Commerce", "Performance Marketing", "Content Production"],
   },
 };
 

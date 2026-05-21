@@ -1,13 +1,19 @@
-import { BRAND, STATS, CLIENTS } from "@/lib/constants";
+import Image from "next/image";
+import { BRAND, STATS, CLIENTS, TEAM } from "@/lib/constants";
 import GlowCard from "@/components/ui/GlowCard";
 import { RevealImageList } from "@/components/ui/reveal-images";
 
+// Pure-white logo marks — these need a dark tile in the clients grid so the
+// light-theme `multiply` blend doesn't make them disappear.
+const WHITE_LOGOS = new Set(["Hero Motocorp", "Eapro", "GradRight", "Windsong"]);
+
 // Hover-reveal preview of what we do — image pairs evoke the discipline.
-// Items mirror the three SOLUTIONS but with editorial photography pulled
+// Items mirror the five SOLUTIONS but with editorial photography pulled
 // from Unsplash so the section reads as a tactile gallery, not a list.
 const REVEAL_ITEMS: Parameters<typeof RevealImageList>[0]["items"] = [
   {
     text: "Brand",
+    href: "/services/brand-solutions",
     images: [
       {
         src: "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?w=240&auto=format&fit=crop&q=70",
@@ -20,20 +26,22 @@ const REVEAL_ITEMS: Parameters<typeof RevealImageList>[0]["items"] = [
     ],
   },
   {
-    text: "Content",
+    text: "Tech",
+    href: "/services/tech-solutions",
     images: [
       {
-        src: "https://images.unsplash.com/photo-1587440871875-191322ee64b0?w=240&auto=format&fit=crop&q=70",
-        alt: "Editorial layout",
+        src: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=240&auto=format&fit=crop&q=70",
+        alt: "Code on screen",
       },
       {
-        src: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=240&auto=format&fit=crop&q=70",
-        alt: "Creative direction",
+        src: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=240&auto=format&fit=crop&q=70",
+        alt: "Analytics dashboard",
       },
     ],
   },
   {
     text: "Media",
+    href: "/services/media-solutions",
     images: [
       {
         src: "https://images.unsplash.com/photo-1575995872537-3793d29d972c?w=240&auto=format&fit=crop&q=70",
@@ -42,6 +50,34 @@ const REVEAL_ITEMS: Parameters<typeof RevealImageList>[0]["items"] = [
       {
         src: "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?w=240&auto=format&fit=crop&q=70",
         alt: "Analytics dashboard",
+      },
+    ],
+  },
+  {
+    text: "Research",
+    href: "/services/research-solutions",
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=240&auto=format&fit=crop&q=70",
+        alt: "Research notes",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=240&auto=format&fit=crop&q=70",
+        alt: "Charts and graphs",
+      },
+    ],
+  },
+  {
+    text: "Film & Photography",
+    href: "/services/film-photography",
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=240&auto=format&fit=crop&q=70",
+        alt: "Film camera on set",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=240&auto=format&fit=crop&q=70",
+        alt: "Product shoot setup",
       },
     ],
   },
@@ -83,12 +119,6 @@ const PRINCIPLES = [
     description: "Think. Plan. Then execute with confidence. Bold ideas deserve bold execution.",
     gradient: "from-fuchsia-700 to-violet-950",
   },
-];
-
-const TEAM = [
-  { name: "Founder", role: "Chief Executive Officer" },
-  { name: "Creative Lead", role: "Head of Design & Strategy" },
-  { name: "Marketing Head", role: "Chief Marketing Officer" },
 ];
 
 export default function AboutPage() {
@@ -196,26 +226,54 @@ export default function AboutPage() {
           <p className="font-body text-sm uppercase tracking-widest text-sp-purple mb-3">
             The People
           </p>
-          <h2 className="font-heading text-3xl md:text-5xl font-800 text-sp-white mb-16">
-            Meet Our Team
-          </h2>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 md:mb-16">
+            <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-800 text-sp-white leading-[1.05] tracking-[-0.02em]">
+              Meet the team behind the work.
+            </h2>
+            <p className="font-body text-base text-sp-text/55 max-w-[360px] leading-relaxed">
+              Specialists across brand, content, design, tech and media — collaborating under one roof.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
             {TEAM.map((member, i) => (
               <div
                 key={i}
-                className="group relative rounded-2xl overflow-hidden bg-sp-bg-card border border-sp-border hover:border-sp-purple/30 transition-colors duration-300"
+                className="group relative rounded-2xl overflow-hidden bg-sp-bg-card border border-sp-border hover:border-sp-purple/40 transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="aspect-[3/4] bg-gradient-to-br from-sp-purple/20 to-sp-bg-dark flex items-center justify-center">
-                  <span className="font-heading text-6xl font-900 text-sp-white/20 group-hover:text-sp-white/35 transition-colors">
-                    {member.name.charAt(0)}
-                  </span>
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  {member.photo ? (
+                    <Image
+                      src={member.photo}
+                      alt={member.name}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-sp-purple/25 to-sp-bg-dark flex items-center justify-center">
+                      <span className="font-heading text-6xl md:text-7xl font-900 text-sp-white/30 group-hover:text-sp-white/50 transition-colors">
+                        {member.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .slice(0, 2)}
+                      </span>
+                    </div>
+                  )}
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 via-black/10 to-transparent"
+                  />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-heading text-lg font-700 text-sp-white group-hover:text-sp-purple transition-colors">
+                <div className="p-5 md:p-6">
+                  <h3 className="font-heading text-base md:text-lg font-700 text-sp-white group-hover:text-sp-purple transition-colors leading-tight">
                     {member.name}
                   </h3>
-                  <p className="font-body text-sm text-sp-text/50 mt-1">{member.role}</p>
+                  <p className="font-body text-xs md:text-sm text-sp-text/55 mt-1.5 uppercase tracking-[0.08em]">
+                    {member.role}
+                  </p>
                 </div>
               </div>
             ))}
@@ -232,15 +290,35 @@ export default function AboutPage() {
           <h2 className="font-heading text-3xl md:text-4xl font-800 text-sp-white mb-12">
             Brands That Trust Us
           </h2>
-          <div className="flex flex-wrap gap-4">
-            {CLIENTS.map((client) => (
-              <div
-                key={client.name}
-                className="px-6 py-3 border border-sp-border rounded-xl bg-sp-bg-card/50 hover:border-sp-purple/20 transition-colors duration-300"
-              >
-                <span className="font-body text-sm text-sp-text/40">{client.name}</span>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {CLIENTS.map((client) => {
+              // A handful of logos are pure-white marks. The light-theme
+              // `multiply` blend on .client-logo-image makes white drop out,
+              // so they'd vanish on a light card. Render those on a fixed
+              // dark tile with normal blending so they always read.
+              const isWhiteLogo = WHITE_LOGOS.has(client.name);
+              return (
+                <div
+                  key={client.name}
+                  className={`group flex items-center justify-center h-24 px-6 border rounded-xl transition-colors duration-300 ${
+                    isWhiteLogo
+                      ? "border-white/10 bg-[#1a0e2e] hover:border-sp-purple/40"
+                      : "border-sp-border bg-sp-bg-card/50 hover:border-sp-purple/30"
+                  }`}
+                >
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    width={200}
+                    height={64}
+                    className={`pointer-events-none select-none h-auto w-auto max-h-[44px] max-w-[140px] object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100 ${
+                      isWhiteLogo ? "" : "client-logo-image"
+                    }`}
+                    unoptimized
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

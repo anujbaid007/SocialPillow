@@ -1,3 +1,5 @@
+import Link from "next/link";
+import type { ElementType } from "react";
 import { cn } from "@/lib/utils";
 
 interface ImageSource {
@@ -8,16 +10,23 @@ interface ImageSource {
 interface RevealImageListItemProps {
   text: string;
   images: [ImageSource, ImageSource];
+  href?: string;
 }
 
-function RevealImageListItem({ text, images }: RevealImageListItemProps) {
+function RevealImageListItem({ text, images, href }: RevealImageListItemProps) {
   const container = "absolute right-8 -top-1 z-40 h-20 w-16";
   const effect =
     "relative duration-500 delay-100 shadow-none group-hover:shadow-xl scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 group-hover:w-full group-hover:h-full w-16 h-16 overflow-hidden transition-all rounded-md";
 
+  const Wrapper: ElementType = href ? Link : "div";
+  const wrapperProps = href ? { href } : {};
+
   return (
-    <div className="group relative h-fit w-fit overflow-visible py-8">
-      <h1 className="text-7xl font-black text-foreground transition-all duration-500 group-hover:opacity-40">
+    <Wrapper
+      {...wrapperProps}
+      className="group relative block h-fit w-fit overflow-visible py-8"
+    >
+      <h1 className="text-7xl font-black text-foreground transition-all duration-500 group-hover:opacity-40 group-hover:text-sp-purple">
         {text}
       </h1>
       <div className={container}>
@@ -37,7 +46,7 @@ function RevealImageListItem({ text, images }: RevealImageListItemProps) {
           <img alt={images[0].alt} src={images[0].src} className="h-full w-full object-cover" />
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
