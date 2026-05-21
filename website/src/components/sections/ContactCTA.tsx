@@ -15,10 +15,12 @@ export default function ContactCTA() {
             <div>
               <p className="font-body text-sm uppercase tracking-[0.2em] text-sp-purple mb-6">Get In Touch</p>
               <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-800 text-sp-white mb-5">
-                Ready to start your project?
+                Take a Pillow and Relax!
+                <br />
+                <span className="text-sp-text/45">We&apos;ve got your back!</span>
               </h2>
               <p className="font-body text-lg text-sp-text/55 max-w-[500px] leading-relaxed">
-                Let&apos;s discuss how we can help your brand grow and reach its full potential.
+                Let&apos;s discuss how to market you, your product and your company — digitally, over a cup of coffee.
               </p>
             </div>
             <Link
