@@ -3,9 +3,11 @@ import { BRAND, STATS, CLIENTS, TEAM } from "@/lib/constants";
 import GlowCard from "@/components/ui/GlowCard";
 import { RevealImageList } from "@/components/ui/reveal-images";
 
-// Pure-white logo marks — these need a dark tile in the clients grid so the
-// light-theme `multiply` blend doesn't make them disappear.
-const WHITE_LOGOS = new Set(["Hero Motocorp", "Eapro", "GradRight", "Windsong"]);
+// Pure-white logo marks — inverted to black in the clients grid so they don't
+// disappear against the light pill (the light-theme `multiply` blend would
+// otherwise drop the white out entirely). Windsong is excluded: it's a
+// colour logo whose baked-in white background was stripped to transparent.
+const WHITE_LOGOS = new Set(["Hero Motocorp", "Eapro", "GradRight"]);
 
 // Hover-reveal preview of what we do — image pairs evoke the discipline.
 // Items mirror the five SOLUTIONS but with editorial photography pulled
@@ -292,28 +294,22 @@ export default function AboutPage() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {CLIENTS.map((client) => {
-              // A handful of logos are pure-white marks. The light-theme
-              // `multiply` blend on .client-logo-image makes white drop out,
-              // so they'd vanish on a light card. Render those on a fixed
-              // dark tile with normal blending so they always read.
+              // A handful of logos are pure-white marks that vanish on a light
+              // card. Invert those to solid black so they read on the standard
+              // light pill alongside the full-colour logos.
               const isWhiteLogo = WHITE_LOGOS.has(client.name);
               return (
                 <div
                   key={client.name}
-                  className={`group flex items-center justify-center h-24 px-6 border rounded-xl transition-colors duration-300 ${
-                    isWhiteLogo
-                      ? "border-white/10 bg-[#1a0e2e] hover:border-sp-purple/40"
-                      : "border-sp-border bg-sp-bg-card/50 hover:border-sp-purple/30"
-                  }`}
+                  className="group flex items-center justify-center h-24 px-6 border border-sp-border rounded-xl bg-sp-bg-card/50 hover:border-sp-purple/30 transition-colors duration-300"
                 >
                   <Image
                     src={client.logo}
                     alt={client.name}
                     width={200}
                     height={64}
-                    className={`pointer-events-none select-none h-auto w-auto max-h-[44px] max-w-[140px] object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100 ${
-                      isWhiteLogo ? "" : "client-logo-image"
-                    }`}
+                    className="client-logo-image pointer-events-none select-none h-auto w-auto max-h-[44px] max-w-[140px] object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+                    style={isWhiteLogo ? { filter: "brightness(0)" } : undefined}
                     unoptimized
                   />
                 </div>
