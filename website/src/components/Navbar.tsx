@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_LINKS, SOLUTIONS, PORTFOLIO, ABOUT_MEGA_FEATURED } from "@/lib/constants";
 import { ChevronDown, Menu, X, ArrowRight, ArrowUpRight } from "lucide-react";
 
@@ -19,6 +20,16 @@ export default function Navbar() {
   const scrolledRef = useRef(false);
   const islandRef = useRef<HTMLDivElement>(null);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pathname = usePathname();
+
+  // Collapse the mobile menu + any open dropdown whenever navigation lands on
+  // a new route. The per-link onClick already closes it, but this is the
+  // backstop for cases that don't fire it (touch quirks, hash links, browser
+  // back/forward) so the overlay never lingers over the new page.
+  useEffect(() => {
+    setMenuOpen(false);
+    setActiveDropdown(null);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {

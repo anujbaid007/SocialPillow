@@ -1,35 +1,54 @@
 import Image from "next/image";
 import { CLIENTS } from "@/lib/constants";
 
+// Logos in full colour — per-logo aspect tuning so different shapes
+// (squarish marks, wide wordmarks, tall stacked logos) all land at the
+// same visual weight without one dominating the row.
 const LOGO_TREATMENTS: Record<string, string> = {
-  "Hero Motocorp": "max-w-[240px] max-h-[72px]",
-  "Hero Fincorp": "max-w-[190px] max-h-[58px]",
-  "Hero Future Energies": "max-w-[210px] max-h-[60px]",
-  JBL: "max-w-[82px] max-h-[58px]",
-  Kia: "max-w-[146px] max-h-[56px]",
-  Hyundai: "max-w-[168px] max-h-[64px]",
-  BMW: "max-w-[92px] max-h-[66px]",
-  Bikanervala: "max-w-[225px] max-h-[76px]",
-  Archies: "max-w-[160px] max-h-[72px]",
-  Uber: "max-w-[140px] max-h-[68px]",
-  Truemeds: "max-w-[184px] max-h-[54px]",
-  "BML Munjal University": "max-w-[176px] max-h-[60px]",
-  GradRight: "max-w-[265px] max-h-[78px]",
-  Eapro: "max-w-[215px] max-h-[70px]",
-  Windsong: "max-w-[104px] max-h-[72px]",
-  "Raman Kant Munjal Foundation": "max-w-[175px] max-h-[58px]",
-  Hamariasha: "max-w-[235px] max-h-[72px]",
+  "Hero Motocorp": "max-w-[220px] max-h-[68px]",
+  "Hero Fincorp": "max-w-[185px] max-h-[60px]",
+  "Hero Future Energies": "max-w-[200px] max-h-[62px]",
+  JBL: "max-w-[90px] max-h-[64px]",
+  Kia: "max-w-[140px] max-h-[60px]",
+  Hyundai: "max-w-[170px] max-h-[64px]",
+  BMW: "max-w-[88px] max-h-[64px]",
+  Bikanervala: "max-w-[210px] max-h-[68px]",
+  Archies: "max-w-[160px] max-h-[68px]",
+  Uber: "max-w-[140px] max-h-[64px]",
+  Truemeds: "max-w-[180px] max-h-[56px]",
+  "BML Munjal University": "max-w-[170px] max-h-[60px]",
+  GradRight: "max-w-[230px] max-h-[68px]",
+  Eapro: "max-w-[195px] max-h-[64px]",
+  Windsong: "max-w-[105px] max-h-[68px]",
+  "Raman Kant Munjal Foundation": "max-w-[170px] max-h-[60px]",
+  Hamariasha: "max-w-[210px] max-h-[68px]",
+  Growpital: "max-w-[180px] max-h-[60px]",
+  "ITP Media Group": "max-w-[185px] max-h-[60px]",
+  Thinkvalley: "max-w-[200px] max-h-[60px]",
+  Keayn: "max-w-[150px] max-h-[60px]",
+  Ultrex: "max-w-[160px] max-h-[60px]",
+  Voltas: "max-w-[170px] max-h-[60px]",
+  Kubota: "max-w-[170px] max-h-[60px]",
 };
 
+// Pure-white logo marks — inverted to black so they don't vanish against the
+// light-theme background (the `multiply` blend on .client-logo-image would
+// otherwise drop the white out entirely). Windsong is excluded: its baked-in
+// white background was stripped to transparent, so it renders in colour.
+const WHITE_LOGOS = new Set(["Hero Motocorp", "Eapro", "GradRight"]);
+
+// Uniform slot widths per logo so the marquee feels consistently spaced.
+// Bottom row now matches the top: same height, same min-widths, same spacing.
 const SLOT_TREATMENTS: Record<string, string> = {
-  "Hero Motocorp": "min-w-[240px] md:min-w-[270px]",
-  BMW: "min-w-[104px] md:min-w-[124px]",
-  Bikanervala: "min-w-[230px] md:min-w-[260px]",
-  GradRight: "min-w-[270px] md:min-w-[300px]",
-  Eapro: "min-w-[220px] md:min-w-[245px]",
-  Windsong: "min-w-[108px] md:min-w-[128px]",
-  Archies: "min-w-[165px] md:min-w-[185px]",
-  Uber: "min-w-[148px] md:min-w-[168px]",
+  "Hero Motocorp": "min-w-[230px]",
+  BMW: "min-w-[120px]",
+  Bikanervala: "min-w-[220px]",
+  GradRight: "min-w-[245px]",
+  Eapro: "min-w-[210px]",
+  Windsong: "min-w-[125px]",
+  Archies: "min-w-[175px]",
+  Uber: "min-w-[160px]",
+  JBL: "min-w-[125px]",
 };
 
 // Pure-CSS infinite marquee — no GSAP, no JS animation loop. The row
@@ -43,8 +62,8 @@ export default function ClientLogos() {
   return (
     <section className="relative overflow-hidden bg-sp-bg py-24 text-sp-white md:py-32">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(113,21,255,0.10),transparent_34%)]" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-40 bg-gradient-to-r from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-40 bg-gradient-to-l from-sp-bg via-sp-bg/90 to-transparent md:w-80" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-sp-bg via-sp-bg/90 to-transparent sm:w-28 md:w-80" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-sp-bg via-sp-bg/90 to-transparent sm:w-28 md:w-80" />
 
       <div className="mx-auto mb-14 max-w-[1400px] px-6 text-center md:px-16 lg:px-24">
         <p className="mb-4 font-body text-xs uppercase tracking-[0.24em] text-sp-purple">Trusted By</p>
@@ -54,10 +73,10 @@ export default function ClientLogos() {
       </div>
 
       {/* Row 1 — scrolls left */}
-      <div className="mb-8 overflow-hidden">
-        <div className="sp-marquee-left flex items-center gap-0 md:gap-1 whitespace-nowrap will-change-transform">
+      <div className="mb-6 overflow-hidden">
+        <div className="sp-marquee-left flex items-center gap-2 md:gap-4 whitespace-nowrap will-change-transform">
           {[0, 1].map((set) => (
-            <div key={set} className="flex shrink-0 items-center gap-0 md:gap-1">
+            <div key={set} className="flex shrink-0 items-center gap-2 md:gap-4">
               {row1.map((client) => (
                 <LogoMark key={`r1-${set}-${client.name}`} client={client} />
               ))}
@@ -66,13 +85,13 @@ export default function ClientLogos() {
         </div>
       </div>
 
-      {/* Row 2 — scrolls right (mirror) */}
+      {/* Row 2 — scrolls right (mirror); same slot height + spacing as row 1 */}
       <div className="overflow-hidden">
-        <div className="sp-marquee-right flex items-center gap-0 md:gap-1 whitespace-nowrap will-change-transform">
+        <div className="sp-marquee-right flex items-center gap-2 md:gap-4 whitespace-nowrap will-change-transform">
           {[0, 1].map((set) => (
-            <div key={set} className="flex shrink-0 items-center gap-0 md:gap-1">
+            <div key={set} className="flex shrink-0 items-center gap-2 md:gap-4">
               {row2.map((client) => (
-                <LogoMark key={`r2-${set}-${client.name}`} client={client} featured />
+                <LogoMark key={`r2-${set}-${client.name}`} client={client} />
               ))}
             </div>
           ))}
@@ -101,25 +120,23 @@ export default function ClientLogos() {
 
 function LogoMark({
   client,
-  featured = false,
 }: {
   client: (typeof CLIENTS)[number];
-  featured?: boolean;
 }) {
   return (
     <div
-      className={`client-logo-slot shrink-0 flex items-center justify-center px-2 md:px-3 ${
-        featured ? "h-[108px] min-w-[175px] md:min-w-[210px]" : "h-[82px] min-w-[122px] md:min-w-[148px]"
-      } ${SLOT_TREATMENTS[client.name] ?? ""}`}
+      className={`client-logo-slot shrink-0 flex items-center justify-center px-4 md:px-6 h-[96px] min-w-[160px] md:min-w-[190px] ${
+        SLOT_TREATMENTS[client.name] ?? ""
+      }`}
     >
       <Image
         src={client.logo}
         alt={client.name}
-        width={featured ? 270 : 210}
-        height={featured ? 90 : 68}
+        width={240}
+        height={80}
         className={`client-logo-image pointer-events-none select-none h-auto w-auto object-contain ${
-          LOGO_TREATMENTS[client.name] ?? "max-w-[150px] max-h-[46px]"
-        }`}
+          WHITE_LOGOS.has(client.name) ? "brightness-0 dark:brightness-100 " : ""
+        }${LOGO_TREATMENTS[client.name] ?? "max-w-[170px] max-h-[60px]"}`}
         unoptimized
       />
     </div>

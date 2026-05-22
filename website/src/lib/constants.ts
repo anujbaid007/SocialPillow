@@ -5,7 +5,7 @@ export const BRAND = {
   description:
     "We are a team of specialists delivering award-winning work for leading brands worldwide.",
   email: "hello@socialpillow.co",
-  phone: "+91-XXXXXXXXXX",
+  phone: "+91-8882508895",
   address: "India",
   social: {
     instagram: "https://www.instagram.com/socialpillow.co/",
@@ -15,58 +15,97 @@ export const BRAND = {
   },
 };
 
-// Three solutions buckets mirroring socialpillow.co structure.
-// Each bucket expands on click to reveal capabilities and ships a small
-// `featured` list of PORTFOLIO slugs used by the navbar mega-menu to
-// show real case-study previews when the user hovers the solution.
+// Five solutions buckets mirroring Schbang's catalog, rephrased for
+// SocialPillow. Each bucket expands on click to reveal capabilities and
+// ships a small `featured` list of PORTFOLIO slugs used by the navbar
+// mega-menu to show real case-study previews when the user hovers the
+// solution.
 export const SOLUTIONS = [
   {
-    title: "Brand Strategy",
-    slug: "brand-strategy",
-    blurb: "It's more than just a logo — it's your legacy.",
+    title: "Brand Solutions",
+    slug: "brand-solutions",
+    blurb: "Holistic digital presence for the biggest brands.",
     description:
-      "We build brand identities that endure. From positioning and messaging to logo systems, visual identity, packaging and brand guidelines — every touchpoint engineered to make your brand unmistakable.",
+      "Social, creative, content and campaigns under one roof. From day-to-day social media management to new brand launches, we build the full integrated brand experience that earns attention and trust.",
     capabilities: [
-      "Brand positioning & messaging",
-      "Logo design & visual identity",
-      "Packaging & print design",
-      "Brand guidelines & systems",
-      "Naming & verbal identity",
+      "Social Media Management",
+      "Original Content & Copywriting",
+      "Graphic Design, Iconography & Illustration",
+      "Video Editing & Animation",
+      "Film Production, AVs & Product Photography",
+      "Campaign Planning",
+      "Influencer Marketing & ORM",
+      "Print, OOH & Mainline Advertising",
+      "New Brand Launch & Rebranding",
     ],
     color: "#A412E2",
     featured: ["shudh", "wrning"] as const,
   },
   {
-    title: "Content Strategy",
-    slug: "content-strategy",
-    blurb: "Maximize your brand's reach while making the most of your budget.",
+    title: "Tech Solutions",
+    slug: "tech-solutions",
+    blurb: "Custom platforms, engineered to scale.",
     description:
-      "Content that earns attention and converts it. We plan, produce and distribute compelling content across every channel — from social-first creative to long-form editorial, video and motion.",
+      "From storefronts to bespoke web apps, we engineer technology that simplifies. UI/UX, custom development, SEO, CRM/ERP and the automation stack to make every customer journey convert.",
     capabilities: [
-      "Social media content & community",
-      "Video production & motion",
-      "Editorial & copywriting",
-      "Photography & art direction",
-      "Influencer collaborations",
+      "Custom Web Development",
+      "Web Personalization",
+      "UI / UX",
+      "SEO",
+      "CRM & ERP Solutions",
+      "E-Commerce",
+      "Email Marketing",
+      "Marketing Automation",
+      "Chatbots",
     ],
     color: "#7115FF",
-    featured: ["uber-india", "hamari-asha"] as const,
+    featured: ["hero-motocorp", "uber-india"] as const,
   },
   {
-    title: "Media Strategy",
-    slug: "media-strategy",
-    blurb: "Not just generating leads — building lasting relationships.",
+    title: "Media Solutions",
+    slug: "media-solutions",
+    blurb: "Performance and brand media planned together.",
     description:
-      "Performance and brand media planned together. We place the right message in front of the right audience at the right moment — across paid social, search, programmatic and emerging channels.",
+      "We place the right message in front of the right audience at the right moment — across paid social, search, programmatic and emerging channels. Performance you can prove, planned with brand discipline.",
     capabilities: [
-      "Paid social & performance ads",
-      "Search & SEO",
-      "Programmatic & display",
-      "Influencer & creator media",
-      "Analytics & attribution",
+      "Media Buying",
+      "Media Planning",
+      "Performance Marketing",
+      "MarTech for Media",
     ],
     color: "#B60BFF",
     featured: ["jbl-feel-the-bass", "hero-motocorp"] as const,
+  },
+  {
+    title: "Research Solutions",
+    slug: "research-solutions",
+    blurb: "Consulting and research that turn data into decisions.",
+    description:
+      "Market research, consumer behaviour studies and campaign analytics that move from data to decisions. We measure what matters, then build the test-learn-scale loop around it.",
+    capabilities: [
+      "Market Research",
+      "Consumer Behaviour & Satisfaction Analysis",
+      "Campaign Analytics",
+      "Usability Testing & Product Development",
+    ],
+    color: "#8B5CF6",
+    featured: ["uber-india", "hero-motocorp"] as const,
+  },
+  {
+    title: "Film & Photography",
+    slug: "film-photography",
+    blurb: "Stories shot in-house — script to final cut.",
+    description:
+      "Brand films, ads, product photography and motion graphics produced in-house from script to final cut. Built for the platforms that matter and the brands that demand craft.",
+    capabilities: [
+      "Brand Films & AVs",
+      "Product Photography",
+      "Motion Graphics & Animation",
+      "Reel & Short-Form Production",
+      "Direction & Post-Production",
+    ],
+    color: "#6D28D9",
+    featured: ["jbl-feel-the-bass", "uber-india"] as const,
   },
 ];
 
@@ -118,7 +157,53 @@ export const CLIENTS = [
   { name: "Kubota", logo: "/images/clients/kubota.png" },
 ];
 
+// Six headline projects shown in the homepage horizontal scroll (in the
+// exact order from the brief). The longer-form portfolio on /work continues
+// to list the deeper case studies (Shudh, WRNING, Hero Motocorp, etc.).
 export const PORTFOLIO = [
+  {
+    title: "Truemeds",
+    subtitle: "Healthcare Platform — Digital Strategy & Performance",
+    category: "Healthcare",
+    image: "/images/projects/truemeds.jpg",
+    slug: "truemeds",
+  },
+  {
+    title: "WindSong",
+    subtitle: "Luxury Real Estate — Brand Launch & Web Experience",
+    category: "Real Estate",
+    image: "/images/projects/windsong.jpg",
+    slug: "windsong",
+  },
+  {
+    title: "Hamariasha",
+    subtitle: "Candle Brand — Product Line Launch",
+    category: "Branding",
+    image: "/images/portfolio/hamari-asha.png",
+    slug: "hamariasha",
+  },
+  {
+    title: "BeMySanta",
+    subtitle: "Gifting Campaign — Creative Direction & Social",
+    category: "Campaign",
+    image: "/images/projects/bemysanta.jpg",
+    slug: "bemysanta",
+  },
+  {
+    title: "Bikanervala",
+    subtitle: "Heritage FMCG — Brand Refresh & Digital",
+    category: "FMCG",
+    image: "/images/projects/bikanervala.jpg",
+    slug: "bikanervala",
+  },
+  {
+    title: "JBL Feel The Bass",
+    subtitle: "Headphone Campaign — Creative Direction",
+    category: "Campaign",
+    image: "/images/portfolio/jbl-feel-the-bass.jpg",
+    slug: "jbl-feel-the-bass",
+  },
+  // Long-tail portfolio entries — surfaced on /work and detail pages.
   {
     title: "Shudh",
     subtitle: "Organic to the Soul — Brand Identity & Packaging",
@@ -127,32 +212,11 @@ export const PORTFOLIO = [
     slug: "shudh",
   },
   {
-    title: "Shudh Identity",
-    subtitle: "Carrot Juice — Visual Identity & Brand Card",
-    category: "Branding",
-    image: "/images/portfolio/shudh-identity.png",
-    slug: "shudh-identity",
-  },
-  {
     title: "WRNING",
     subtitle: "Fashion Brand — Packaging & Hang Tag Design",
     category: "Branding",
     image: "/images/portfolio/wrning.jpg",
     slug: "wrning",
-  },
-  {
-    title: "JBL Feel The Bass",
-    subtitle: "Headphone Campaign — Creative Direction",
-    category: "Social Media",
-    image: "/images/portfolio/jbl-feel-the-bass.jpg",
-    slug: "jbl-feel-the-bass",
-  },
-  {
-    title: "Hamari Asha",
-    subtitle: "Candle Brand — Product Line Launch",
-    category: "Branding",
-    image: "/images/portfolio/hamari-asha.png",
-    slug: "hamari-asha",
   },
   {
     title: "Hero Motocorp",
@@ -171,10 +235,118 @@ export const PORTFOLIO = [
 ];
 
 export const STATS = [
-  { value: "24+", label: "Brands Served" },
-  { value: "5+", label: "Core Services" },
-  { value: "100+", label: "Projects Delivered" },
-  { value: "3+", label: "Years & Counting" },
+  { value: "200+", label: "Projects" },
+  { value: "20+", label: "Industries" },
+  { value: "5+", label: "Years & Counting" },
+  { value: "6+", label: "Countries" },
+];
+
+// Industries the agency serves. Project + client counts feed the Industries
+// page cards; the order roughly tracks where we have the strongest portfolio.
+export const INDUSTRIES = [
+  {
+    slug: "fmcg",
+    name: "FMCG",
+    description:
+      "Fast-moving markets with short buying cycles. We blend brand-building creative with performance media to capture demand and drive measurable revenue.",
+    projects: 28,
+    clients: 9,
+  },
+  {
+    slug: "healthcare",
+    name: "Healthcare",
+    description:
+      "Regulated environments where trust matters. Compliance-aware creative paired with first-party data acquisition engines that respect the category.",
+    projects: 22,
+    clients: 7,
+  },
+  {
+    slug: "automotive",
+    name: "Automotive & Mobility",
+    description:
+      "Long consideration cycles, big-ticket purchases. Multi-channel campaigns that move buyers from interest to dealership with measurable lift.",
+    projects: 24,
+    clients: 6,
+  },
+  {
+    slug: "real-estate",
+    name: "Real Estate",
+    description:
+      "Premium positioning, lead quality and sales-team enablement under one umbrella. Brand systems + cinematic experiences + qualified pipeline.",
+    projects: 14,
+    clients: 8,
+  },
+  {
+    slug: "fintech",
+    name: "Fintech & BFSI",
+    description:
+      "Complex products with high trust requirements. Clarity-first creative and conversion journeys built around regulated category constraints.",
+    projects: 18,
+    clients: 6,
+  },
+  {
+    slug: "ecommerce",
+    name: "E-Commerce & D2C",
+    description:
+      "Performance, retention and brand all expected on the same dashboard. We integrate paid media, lifecycle automation and storefront optimisation.",
+    projects: 32,
+    clients: 11,
+  },
+  {
+    slug: "education",
+    name: "Education & Ed-Tech",
+    description:
+      "High-intent, research-led decisions. Lead quality, nurturing journeys and enrolment conversion — measured by what actually reaches admissions.",
+    projects: 16,
+    clients: 7,
+  },
+  {
+    slug: "hospitality",
+    name: "Hospitality & F&B",
+    description:
+      "Experience-led decisions, seasonal demand, omnichannel customer journeys. Booking conversions, brand preference and content that travels.",
+    projects: 12,
+    clients: 5,
+  },
+  {
+    slug: "retail",
+    name: "Retail",
+    description:
+      "Omnichannel customer journeys and price-sensitive buyers. Performance-led strategies that drive footfall, conversions and repeat purchase.",
+    projects: 17,
+    clients: 6,
+  },
+  {
+    slug: "fashion-lifestyle",
+    name: "Fashion & Lifestyle",
+    description:
+      "Visual-first categories where craft, content and culture matter equally. End-to-end branding, social and influencer programmes.",
+    projects: 14,
+    clients: 6,
+  },
+  {
+    slug: "saas-tech",
+    name: "SaaS & Tech",
+    description:
+      "Long sales cycles, complex products, ICP-led growth. Account-based campaigns, content engines, and product-led marketing systems.",
+    projects: 13,
+    clients: 5,
+  },
+];
+
+// Real team — photos sourced from the company-shared Team Photos folder.
+// `photo: null` renders an initials placeholder card. Display order matches
+// the seniority listed in the team sheet.
+export const TEAM = [
+  { name: "Mayank Gupta", role: "Founder & CEO", photo: "/images/team/mayank.jpeg" },
+  { name: "Anuj Baid", role: "Co-Founder & CTO", photo: "/images/team/anuj.png" },
+  { name: "Mehak Gupta", role: "Creative Director", photo: "/images/team/mehak.jpeg" },
+  { name: "Nandini Gupta", role: "Creative Strategist", photo: "/images/team/nandini.jpeg" },
+  { name: "Pankhuri Gupta", role: "Head of Content", photo: "/images/team/pankhuri.jpeg" },
+  { name: "Abhishek Prajapati", role: "Head Editor", photo: null as string | null },
+  { name: "Md Zishan", role: "Head Designer", photo: "/images/team/zishan.png" },
+  { name: "Naira Gehani", role: "Social Media Strategist", photo: "/images/team/naira.jpeg" },
+  { name: "Isha Sachdeva", role: "Head SEO", photo: null as string | null },
 ];
 
 export const NAV_LINKS = [
@@ -185,22 +357,33 @@ export const NAV_LINKS = [
     href: "/services",
     dropdown: [
       {
-        label: "Brand Strategy",
-        href: "/services/brand-strategy",
-        description: "Identity systems that turn your brand into a legacy.",
+        label: "Brand Solutions",
+        href: "/services/brand-solutions",
+        description: "Social, creative, content and campaigns under one roof.",
       },
       {
-        label: "Content Strategy",
-        href: "/services/content-strategy",
-        description: "Content that earns attention and converts it.",
+        label: "Tech Solutions",
+        href: "/services/tech-solutions",
+        description: "Custom platforms, engineered to scale.",
       },
       {
-        label: "Media Strategy",
-        href: "/services/media-strategy",
+        label: "Media Solutions",
+        href: "/services/media-solutions",
         description: "Performance + brand media planned together.",
+      },
+      {
+        label: "Research Solutions",
+        href: "/services/research-solutions",
+        description: "Research that turns data into decisions.",
+      },
+      {
+        label: "Film & Photography",
+        href: "/services/film-photography",
+        description: "Brand films and product photography, shot in-house.",
       },
     ],
   },
+  { label: "Industries", href: "/industries" },
   {
     label: "About",
     href: "/about",

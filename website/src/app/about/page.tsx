@@ -308,8 +308,9 @@ export default function AboutPage() {
                     alt={client.name}
                     width={200}
                     height={64}
-                    className="client-logo-image pointer-events-none select-none h-auto w-auto max-h-[44px] max-w-[140px] object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-                    style={isWhiteLogo ? { filter: "brightness(0)" } : undefined}
+                    className={`client-logo-image pointer-events-none select-none h-auto w-auto max-h-[44px] max-w-[140px] object-contain opacity-80 transition-opacity duration-300 group-hover:opacity-100 ${
+                      isWhiteLogo ? "brightness-0 dark:brightness-100" : ""
+                    }`}
                     unoptimized
                   />
                 </div>

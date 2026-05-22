@@ -547,16 +547,17 @@ html:not(.dark) .partner-logo-mark:hover {
   opacity: 1;
 }
 
-/* Light theme — client logos.
-   `grayscale(1)` desaturates while keeping internal lightness variation, so
-   detail-rich marks (BMW roundel, JBL block, Hero "H", etc.) read as their
-   actual shape instead of collapsing to a solid blob like brightness(0) did.
-   `multiply` lets any white logo background drop out into the page bg.
-   Mild contrast/darken brings the result close to a uniform black treatment. */
+/* Client logos render in full colour. On the light theme, `multiply`
+   lets any white logo background drop out so the mark sits cleanly on
+   the page surface. Dark theme: render as-is — most logos already have
+   transparent backgrounds and any small light bg actually helps the
+   mark separate from the dark section. */
 html:not(.dark) .client-logo-image {
-  filter: grayscale(1) contrast(1.15) brightness(0.55) !important;
-  mix-blend-mode: multiply !important;
+  mix-blend-mode: multiply;
   opacity: 1;
+}
+html.dark .client-logo-image {
+  opacity: 0.95;
 }
 
 /* Theme — ServicesGrid background overlay.
