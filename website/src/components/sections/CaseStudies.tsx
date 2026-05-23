@@ -80,29 +80,60 @@ export default function CaseStudies() {
     };
   }, []);
 
-  // Track which card sits in the centre of the rail. The center band is
-  // created by shrinking the observer root's horizontal bounds via
-  // rootMargin; the card intersecting it becomes active. Only used visually
-  // on touch devices (see the `@media (hover: none)` rule below).
+  // Continuously highlight whichever card's centre is nearest the horizontal
+  // middle of the screen as the rail is side-scrolled. A scroll listener
+  // (rAF-throttled) recomputes the nearest card on every frame so the
+  // highlight tracks instantly, rather than waiting for a card to cross an
+  // observer band. Only shown on touch/mobile (see the media query below).
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
-    const cards = Array.from(
-      rail.querySelectorAll<HTMLElement>("[data-project-card]")
-    );
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = cards.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setActiveCard(idx);
-          }
+
+    // Mobile-only: the highlight is purely a touch affordance (desktop uses
+    // hover), so we only track + listen below the lg desktop breakpoint.
+    const mql = window.matchMedia("(max-width: 1023px)");
+
+    let raf: number | null = null;
+    const recompute = () => {
+      raf = null;
+      const cards = rail.querySelectorAll<HTMLElement>("[data-project-card]");
+      const screenCenter = window.innerWidth / 2;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      cards.forEach((card, i) => {
+        const r = card.getBoundingClientRect();
+        const dist = Math.abs(r.left + r.width / 2 - screenCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
         }
-      },
-      { root: rail, rootMargin: "0px -45% 0px -45%", threshold: 0 }
-    );
-    cards.forEach((c) => io.observe(c));
-    return () => io.disconnect();
+      });
+      setActiveCard((prev) => (prev === bestIdx ? prev : bestIdx));
+    };
+    const onScroll = () => {
+      if (raf == null) raf = requestAnimationFrame(recompute);
+    };
+
+    const attach = () => {
+      rail.addEventListener("scroll", onScroll, { passive: true });
+      recompute();
+    };
+    const detach = () => rail.removeEventListener("scroll", onScroll);
+
+    if (mql.matches) attach();
+    const onMediaChange = (e: MediaQueryListEvent) => {
+      if (e.matches) attach();
+      else detach();
+    };
+    mql.addEventListener("change", onMediaChange);
+    window.addEventListener("resize", onScroll, { passive: true });
+
+    return () => {
+      detach();
+      mql.removeEventListener("change", onMediaChange);
+      window.removeEventListener("resize", onScroll);
+      if (raf != null) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
